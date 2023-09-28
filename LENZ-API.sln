@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LENZ-API", "LENZ-API.csproj", "{F4BB6A79-CA93-4BFE-9A6A-DC0FD1271F1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4BB6A79-CA93-4BFE-9A6A-DC0FD1271F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4BB6A79-CA93-4BFE-9A6A-DC0FD1271F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4BB6A79-CA93-4BFE-9A6A-DC0FD1271F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4BB6A79-CA93-4BFE-9A6A-DC0FD1271F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0CE1E922-3D24-4E19-A01E-3C286D4F4237}
+	EndGlobalSection
+EndGlobal
