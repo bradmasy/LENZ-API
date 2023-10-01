@@ -24,7 +24,6 @@ urlpatterns = [
     path("", api_root, name="index"),
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
-    path("auth/",include("drf_social_oauth2.urls", namespace="drf")), # Social login URLS
     # Custom Apps
     path("", include("apps.user.urls")),
 ] + router.urls

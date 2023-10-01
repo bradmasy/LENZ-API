@@ -1,5 +1,5 @@
 """
-ASGI config for SavvyGrocerAPI project.
+ASGI config for LENZ project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

@@ -1,5 +1,5 @@
 """
-WSGI config for SavvyGrocerAPI project.
+WSGI config for LENZ project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
