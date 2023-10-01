@@ -1,22 +1,35 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# pull official base image
+FROM python:3.10-alpine
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+# set work directory
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["LENZ-API.csproj", "."]
-RUN dotnet restore "./LENZ-API.csproj"
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DEBUG 0
+
+# install psycopg2
+RUN apk update \
+    && apk add --virtual build-essential gcc python3-dev musl-dev \
+    && apk add postgresql-dev \
+    && pip install psycopg2
+
+# install dependencies
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
+# copy project
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "LENZ-API.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "LENZ-API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# collect static files
+RUN python manage.py collectstatic --noinput
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "LENZ-API.dll"]
+ENV SECRET_KEY='django-insecure-q7atufjzx2=&a^btpq0n1n^k)pwl)z*%8idzje=390g*3iz#bh'
+# ENV POSTGRES_DB=SavvyGrocerMain
+# ENV POSTGRES_USER=postgres
+# ENV POSTGRES_PASSWORD=password
+# ENV POSTGRES_HOST=127.0.0.1
+
+# run gunicorn
+CMD gunicorn project.wsgi:application --bind 0.0.0.0:$PORT
