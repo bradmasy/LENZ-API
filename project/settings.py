@@ -55,9 +55,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_tracking",
     # Social Login
-    "oauth2_provider",
     "social_django",
-    "drf_social_oauth2",
     # Apps
     "apps.user",
 ]
