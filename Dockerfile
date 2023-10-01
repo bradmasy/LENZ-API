@@ -23,7 +23,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # collect static files
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic
 
 ENV SECRET_KEY='django-insecure-q7atufjzx2=&a^btpq0n1n^k)pwl)z*%8idzje=390g*3iz#bh'
 # ENV POSTGRES_DB=SavvyGrocerMain
