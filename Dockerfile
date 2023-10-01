@@ -5,6 +5,8 @@ FROM python:3.10-alpine
 WORKDIR /app
 
 # set environment variables
+ARG DJANGO_SECRET_KEY
+ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DEBUG 0
@@ -25,7 +27,8 @@ COPY . .
 # collect static files
 RUN python manage.py collectstatic --noinput
 
-ENV SECRET_KEY='django-insecure-q7atufjzx2=&a^btpq0n1n^k)pwl)z*%8idzje=390g*3iz#bh'
+ENV SECRET_KEY=${DJANGO_SECRET_KEY}
+
 # ENV POSTGRES_DB=SavvyGrocerMain
 # ENV POSTGRES_USER=postgres
 # ENV POSTGRES_PASSWORD=password
