@@ -50,6 +50,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
+    # REST Framework
+    
+    "django_extensions",
+    "django_filters",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "rest_framework_tracking",
 ]
 
 MIDDLEWARE = [
@@ -69,7 +77,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -98,8 +106,6 @@ REST_FRAMEWORK = {
         # SessionAuthentication may interfere with mobile API requests.
         # If you are experiencing issues, try commenting out the following line.
         "rest_framework.authentication.SessionAuthentication",
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        "drf_social_oauth2.authentication.SocialAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
