@@ -17,7 +17,7 @@ import dj_database_url
 
 # Environment Variables for project
 
-ENV = os.environ.get("ENV", "DEV")
+ENV = "PROD" #os.environ.get("ENV", "DEV")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
