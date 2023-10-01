@@ -7,7 +7,6 @@ backend-api for Lenz API
 - Database
     - Postgres SQL 
     - PG Admin 4
-
 - Django Version 4.2.4
 - Python Version 3.11
 
