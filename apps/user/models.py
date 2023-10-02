@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     subscribed = models.BooleanField(
         default=False
     )  # if they are a paid user, can make a profit off the app
+    is_staff = models.BooleanField(default=False)
     username = models.CharField(max_length=100, unique=True, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
