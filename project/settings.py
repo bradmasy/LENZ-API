@@ -50,17 +50,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
     # REST Framework
-    
     "django_extensions",
     "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_tracking",
-    
     # Apps/Models
-    
     "apps.user",
 ]
 
@@ -208,7 +204,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://lenz-5f9c8ee2c363.herokuapp.com/",
     "https://*lenz-5f9c8ee2c363.herokuapp.com/",
-    "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/"
+    "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/",
 ]
 
 # CSRF_COOKIE_SECURE = False
