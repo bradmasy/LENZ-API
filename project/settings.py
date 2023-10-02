@@ -58,6 +58,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_tracking",
+    
+    # Apps/Models
+    
+    "apps.user",
 ]
 
 MIDDLEWARE = [
@@ -183,8 +187,14 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Admin
+
+AUTH_USER_MODEL = "user.User"
+APP_NAME = "Lenz"
+ADMIN_TITLE = "Admin"
+ADMIN_HEADER = "Admin"
