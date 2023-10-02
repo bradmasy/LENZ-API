@@ -18,7 +18,7 @@ class UsersViewTest(TestCase):
             "last_name": "User",
             "password": "testpassword",
         }
-        
+
         get_user_model().objects.create_user(
             email=self.test_user.get("email"), password=self.test_user.get("password")
         )
