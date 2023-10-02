@@ -59,8 +59,6 @@ class UserSignupView(generics.CreateAPIView):
     serializer_class = UserSignupSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
-
         required = ["username", "email", "password", "first_name", "last_name"]
         try:
             if not all([field in request.data for field in required]):
@@ -77,4 +75,4 @@ class UserSignupView(generics.CreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        return Response({"message": "User created successfully", "user": serialized})
+        return Response({"message": "User created successfully", "user": serialized}, status=status.HTTP_201_CREATED)

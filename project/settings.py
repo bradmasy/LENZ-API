@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import sys
 
 
 # Environment Variables for project
@@ -122,6 +123,7 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -132,7 +134,16 @@ DATABASES = {
     }
 }
 
-if ENV == "PROD":
+if "test" in sys.argv:
+    DATABASES["default"]: {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
+    }
+
+if ENV == "PROD" and "test" not in sys.argv:
     print("PROD DATABASE")
     DATABASE_URL = os.environ.get("DATABASE_URL")
     db_from_env = dj_database_url.config(
