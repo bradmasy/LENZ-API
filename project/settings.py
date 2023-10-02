@@ -235,6 +235,9 @@ CSRF_TRUSTED_ORIGINS = [
     "http://*localhost:8000",
     "http://*127.0.0.1:9000",
     "http://127.0.0.1:8000",
+    "https://lenz-5f9c8ee2c363.herokuapp.com/",
+    "https://*lenz-5f9c8ee2c363.herokuapp.com/",
+    "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/"
 ]
 
 # CSRF_COOKIE_SECURE = False
@@ -242,15 +245,3 @@ CSRF_TRUSTED_ORIGINS = [
 # CORS_ALLOW_CREDENTIALS = True
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_CREDENTIALS = True
-
-
-# FACEBOOK LOGIN BACKEND
-
-# Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("SOCIAL_AUTH_FACEBOOK_KEY")
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("SOCIAL_AUTH_FACEBOOK_SECRET")
-
-# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
-# Email is not sent by default, to get it, you must request the email permission.
-SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id, name, email"}
