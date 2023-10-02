@@ -198,3 +198,21 @@ AUTH_USER_MODEL = "user.User"
 APP_NAME = "Lenz"
 ADMIN_TITLE = "Admin"
 ADMIN_HEADER = "Admin"
+
+
+# ANYTHING SENDING POST REQS BACK HAS TO BE IN HERE AND SPECIFIC
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://*localhost:8000",
+    "http://*127.0.0.1:9000",
+    "http://127.0.0.1:8000",
+    "https://lenz-5f9c8ee2c363.herokuapp.com/",
+    "https://*lenz-5f9c8ee2c363.herokuapp.com/",
+    "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/"
+]
+
+# CSRF_COOKIE_SECURE = False
+# CSRF_COOKIE_PATH = "/"
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
