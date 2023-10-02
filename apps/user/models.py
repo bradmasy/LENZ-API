@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
-# Create your models here.
-
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, first_name, last_name, password=None):
@@ -40,16 +38,23 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    username = models.CharField(max_length=30, unique=True)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=100)
-    is_staff = models.BooleanField(default=False)
+    first_name = models.CharField(max_length=100, unique=False, blank=False, null=False)
+    last_name = models.CharField(max_length=100, unique=False, blank=False, null=False)
+    email = models.EmailField(max_length=100, unique=True, blank=False, null=False)
+    password = models.CharField(max_length=100, unique=False, blank=False, null=False)
+    subscribed = models.BooleanField(
+        default=False
+    )  # if they are a paid user, can make a profit off the app
+    username = models.CharField(max_length=100, unique=True, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]
 
-    class Meta:
-        app_label = "user"
+
+class Blogger(User):
+    pass
+
+
+class Photographer(User):
+    pass

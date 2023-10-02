@@ -7,7 +7,7 @@ from rest_framework.reverse import reverse
 def api_root(request):
     return Response(
         {
-            "users": reverse("users", request=request),
+           # "users": reverse("users", request=request),
             #  "auth": reverse("auth", request=request),
         }
     )
