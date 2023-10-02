@@ -37,7 +37,9 @@ class UserAuthenticationSerializer(serializers.Serializer):
         email = attrs.get("email", None)
         password = attrs.get("password", None)
 
-        if (email is not None and email != "") and (password is not None and password != ""):
+        if (email is not None and email != "") and (
+            password is not None and password != ""
+        ):
             user = authenticate(
                 request=self.context.get("request"), username=email, password=password
             )

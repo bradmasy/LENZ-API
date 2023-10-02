@@ -59,13 +59,14 @@ class UserSignupView(generics.CreateAPIView):
     serializer_class = UserSignupSerializer
 
     def post(self, request, *args, **kwargs):
-        
         print(request.data)
-        
+
         required = ["username", "email", "password", "first_name", "last_name"]
         try:
             if not all([field in request.data for field in required]):
-                raise Exception(f"Missing required one of the required fields: {required}")
+                raise Exception(
+                    f"Missing required one of the required fields: {required}"
+                )
 
             user_data = request.data
             user = User.objects.create_user(**user_data)
