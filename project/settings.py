@@ -134,15 +134,6 @@ DATABASES = {
     }
 }
 
-if "test" in sys.argv:
-    DATABASES["default"]: {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
-    }
-
 if ENV == "PROD" and "test" not in sys.argv:
     print("PROD DATABASE")
     DATABASE_URL = os.environ.get("DATABASE_URL")
