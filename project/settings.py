@@ -135,7 +135,7 @@ if "test" in sys.argv:
     DATABASES["default"]["NAME"] = f"{BASE_DIR}/db.postgres"
     DATABASES["default"][
         "HOST"
-    ]: "localhost"  # Since GitHub Actions service is running locally
+    ] = "localhost"  # Since GitHub Actions service is running locally
 
 if ENV == "DEV" and "test" not in sys.argv:
     DATABASES["default"]["NAME"] = os.environ.get("POSTGRES_DB")
