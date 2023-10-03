@@ -13,7 +13,8 @@ jobs:
     env:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: test
+      POSTGRES_HOST: "127.0.0.1"
 
     services:
       postgres:
@@ -21,7 +22,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_DB: test
           POSTGRES_HOST: "127.0.0.1"
 
         ports:
@@ -52,9 +53,11 @@ jobs:
     - name: Run Tests
       env:
         SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
         POSTGRES_DB: postgres
         POSTGRES_HOST: "127.0.0.1"
       run: |
+        echo $SECRET_KEY
         python manage.py test apps.user.tests
