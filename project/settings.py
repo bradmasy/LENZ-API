@@ -127,12 +127,19 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
+      
     }
 }
+
+if "test" in sys.argv:
+    print("TEST DATABASE")
+    DATABASES["default"]["NAME"] = f"{BASE_DIR}/db.postgres"
+    
+if ENV == "DEV" and "test" not in sys.argv:
+    DATABASES["default"]["NAME"] = os.environ.get("POSTGRES_DB")
+    DATABASES["default"]["USER"] = os.environ.get("POSTGRES_USER")
+    DATABASES["default"]["PASSWORD"] = os.environ.get("POSTGRES_PASSWORD")
+    DATABASES["default"]["HOST"] = os.environ.get("POSTGRES_HOST")
 
 if ENV == "PROD" and "test" not in sys.argv:
     print("PROD DATABASE")
@@ -142,9 +149,9 @@ if ENV == "PROD" and "test" not in sys.argv:
     )
     DATABASES["default"].update(db_from_env)
 
-DATABASES["default"]["TEST"] = {
-    "NAME": "test",  # Specify the name for your test database
-}
+# DATABASES["default"]["TEST"] = {
+#     "NAME": "test",  # Specify the name for your test database
+# }
 
 
 # Password validation
