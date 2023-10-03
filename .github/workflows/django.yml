@@ -58,5 +58,4 @@ jobs:
         POSTGRES_DB: postgres
         POSTGRES_HOST: "127.0.0.1"
       run: |
-        echo ${{secrets.DJANGO_SECRET_KEY}}
         python manage.py test apps.user.tests
