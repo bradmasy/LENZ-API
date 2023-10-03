@@ -127,6 +127,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+        "TEST": "test",
     },
     "test": {
         "ENGINE": "django.db.backends.postgresql",
