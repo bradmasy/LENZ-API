@@ -15,7 +15,7 @@ jobs:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
       POSTGRES_HOST: "127.0.0.1"
-      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      SECRET_KEY: ${{ secrets.DJANGO_SECRET }}
     services:
       postgres:
         image: postgres:latest
@@ -52,7 +52,7 @@ jobs:
         flake8 .
     - name: Run Tests
       env:
-        SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        SECRET_KEY: ${{ secrets.DJANGO_SECRET }}
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
         POSTGRES_DB: postgres
