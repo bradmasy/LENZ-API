@@ -127,25 +127,13 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
         "TEST": "test",
-    },
-    "test": {
-        "ENGINE": "django.db.backends.postgresql",
-    },
+    }
 }
-
-if "test" in sys.argv:
-    #     print("TEST DATABASE")
-    DATABASES["test"]["NAME"] = f"{BASE_DIR}/db.postgres"
-#     DATABASES["default"][
-#         "HOST"
-#     ] = "localhost"  # Since GitHub Actions service is running locally
-
-if ENV == "DEV" and "test" not in sys.argv:
-    DATABASES["default"]["NAME"] = os.environ.get("POSTGRES_DB")
-    DATABASES["default"]["USER"] = os.environ.get("POSTGRES_USER")
-    DATABASES["default"]["PASSWORD"] = os.environ.get("POSTGRES_PASSWORD")
-    DATABASES["default"]["HOST"] = os.environ.get("POSTGRES_HOST")
 
 if ENV == "PROD" and "test" not in sys.argv:
     print("PROD DATABASE")
