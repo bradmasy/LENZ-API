@@ -127,14 +127,13 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-      
     }
 }
 
 if "test" in sys.argv:
     print("TEST DATABASE")
     DATABASES["default"]["NAME"] = f"{BASE_DIR}/db.postgres"
-    
+
 if ENV == "DEV" and "test" not in sys.argv:
     DATABASES["default"]["NAME"] = os.environ.get("POSTGRES_DB")
     DATABASES["default"]["USER"] = os.environ.get("POSTGRES_USER")
