@@ -123,6 +123,11 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+print(os.environ.get("POSTGRES_DB"))
+print(os.environ.get("POSTGRES_USER"))
+print(os.environ.get("POSTGRES_PASSWORD"))
+print(os.environ.get("POSTGRES_HOST"))
+print(os.environ.get("SECRET_KEY"))
 
 DATABASES = {
     "default": {
@@ -141,10 +146,6 @@ if ENV == "PROD" and "test" not in sys.argv:
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
     )
     DATABASES["default"].update(db_from_env)
-
-DATABASES["default"]["TEST"] = {
-    "NAME": "test",  # Specify the name for your test database
-}
 
 
 # Password validation
