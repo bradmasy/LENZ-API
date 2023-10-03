@@ -131,7 +131,7 @@ DATABASES = {
 }
 
 if "test" in sys.argv:
-#     print("TEST DATABASE")
+    #     print("TEST DATABASE")
     DATABASES["test"]["NAME"] = f"{BASE_DIR}/db.postgres"
 #     DATABASES["default"][
 #         "HOST"
