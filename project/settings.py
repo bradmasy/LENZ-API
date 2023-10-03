@@ -123,6 +123,11 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+print(os.environ.get("POSTGRES_DB"))
+print(os.environ.get("POSTGRES_USER"))
+print(os.environ.get("POSTGRES_PASSWORD"))
+print(os.environ.get("POSTGRES_HOST"))
+
 
 DATABASES = {
     "default": {
