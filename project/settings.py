@@ -147,10 +147,6 @@ if ENV == "PROD" and "test" not in sys.argv:
     )
     DATABASES["default"].update(db_from_env)
 
-DATABASES["default"]["TEST"] = {
-    "NAME": "test",  # Specify the name for your test database
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
