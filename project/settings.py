@@ -136,7 +136,6 @@ DATABASES = {
         "USER": os.environ.get("POSTGRES_USER"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
         "HOST": os.environ.get("POSTGRES_HOST"),
-        "TEST": "test",
     }
 }
 
@@ -148,9 +147,9 @@ if ENV == "PROD" and "test" not in sys.argv:
     )
     DATABASES["default"].update(db_from_env)
 
-# DATABASES["default"]["TEST"] = {
-#     "NAME": "test",  # Specify the name for your test database
-# }
+DATABASES["default"]["TEST"] = {
+    "NAME": "test",  # Specify the name for your test database
+}
 
 
 # Password validation
