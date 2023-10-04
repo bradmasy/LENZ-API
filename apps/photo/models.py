@@ -1,6 +1,23 @@
 from django.db import models
+from django.db.models.query import QuerySet
 
 # Create your models here.
+
+
+class PhotoQuerySet(QuerySet):
+    def if_active(self):
+        return self.filter(active=True)
+
+
+class PhotoManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return PhotoQuerySet(self.model, using=self._db)
+
+    def if_active(self):
+        return self.get_queryset().if_active()
+
+    def by_tags(self, tags):
+        pass
 
 
 class Photo(models.Model):
@@ -10,7 +27,17 @@ class Photo(models.Model):
         models (models): Model for a photo.
     """
 
+    objects = PhotoManager()
+    id = models.AutoField(primary_key=True)
+    used_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="photos/", blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+
+class PhotoAlbumPhoto(models.Model):
+    id = models.AutoField(primary_key=True)
+    photo_album_id = models.ForeignKey("PhotoAlbum", on_delete=models.CASCADE)
+    photo_id = models.ForeignKey("Photo", on_delete=models.CASCADE)
