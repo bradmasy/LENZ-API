@@ -208,7 +208,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://lenz-5f9c8ee2c363.herokuapp.com/",
     "https://*lenz-5f9c8ee2c363.herokuapp.com/",
     "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/",
-    "*",
 ]
 
 # CSRF_COOKIE_SECURE = False
