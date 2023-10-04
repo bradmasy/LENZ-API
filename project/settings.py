@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "https://lenz-5f9c8ee2c363.herokuapp.com/",
     "lenz-5f9c8ee2c363.herokuapp.com",
+    "*",
 ]
 
 
