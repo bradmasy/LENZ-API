@@ -57,3 +57,28 @@ class PhotoTests(TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data.get("description"), "testdescription")
+
+    def test_get_photo(self):
+        """Test getting a photo"""
+        with open("apps/photo/test_photos/test.png", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.png", img_file.read(), content_type="image/png"
+            )
+
+        response = self.client.post(
+            reverse("photo-upload"),
+            {
+                "user_id": self.user_id,
+                "photo": photo_file,
+                "description": "testdescription",
+                "active": True,
+            },
+            format="multipart",
+        )
+
+        photo_id = response.data.get("id")
+        response = self.client.get(reverse("photos"))
+        print(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("description"), "testdescription")
