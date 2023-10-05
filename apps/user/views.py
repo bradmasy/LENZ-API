@@ -43,6 +43,7 @@ class UserLoginView(ObtainAuthToken):
     serializer_class = UserAuthenticationSerializer
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = UserAuthenticationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         response = super().post(request, *args, **kwargs)

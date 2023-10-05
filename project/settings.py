@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     "rest_framework_tracking",
     # Apps/Models
     "apps.user",
+    "apps.photo",
+    "apps.photo_album",
+    
 ]
 
 MIDDLEWARE = [

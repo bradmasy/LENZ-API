@@ -29,8 +29,9 @@ class Photo(models.Model):
 
     objects = PhotoManager()
     id = models.AutoField(primary_key=True)
-    used_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to="photos/", blank=False, null=False)
+    user_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    photo =models.BinaryField(blank=False, null=False)
+    # photo = models.ImageField(upload_to=f"user-photos/{user_id}", blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -39,5 +40,5 @@ class Photo(models.Model):
 
 class PhotoAlbumPhoto(models.Model):
     id = models.AutoField(primary_key=True)
-    photo_album_id = models.ForeignKey("PhotoAlbum", on_delete=models.CASCADE)
+    photo_album_id = models.ForeignKey("photo_album.PhotoAlbum", on_delete=models.CASCADE)
     photo_id = models.ForeignKey("Photo", on_delete=models.CASCADE)
