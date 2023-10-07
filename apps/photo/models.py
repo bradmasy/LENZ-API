@@ -8,6 +8,8 @@ class PhotoQuerySet(QuerySet):
     def if_active(self):
         return self.filter(active=True)
 
+    def by_id(self, id):
+        return self.filter(id=id)
 
 class PhotoManager(models.Manager):
     def get_queryset(self) -> QuerySet:
@@ -18,6 +20,9 @@ class PhotoManager(models.Manager):
 
     def by_tags(self, tags):
         pass
+    
+    def by_id(self, id):
+        return self.get_queryset().by_id(id)
 
 
 class Photo(models.Model):

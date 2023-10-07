@@ -33,3 +33,13 @@ class PhotoUpload(generics.CreateAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(PhotoSerializer(photo).data, status=status.HTTP_201_CREATED)
+
+class PhotoViewByID(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhotoSerializer
+    
+    def get_queryset(self):
+        id = self.kwargs.get('id', None)  
+        print("args ", self.kwargs)
+        queryset = Photo.objects.by_id(id)
+        return queryset

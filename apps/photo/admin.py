@@ -6,7 +6,7 @@ from apps.photo.models import Photo
 class PhotoAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "user",
+        "user_id",
         "photo",
         "description",
         "active",
@@ -15,12 +15,12 @@ class PhotoAdmin(admin.ModelAdmin):
     )
     search_fields = (
         "id",
-        "user",
+        "user_id",
         "photo",
         "description",
         "active",
         "created_at",
         "updated_at",
     )
-    ordering = ("user",)
+    ordering = ("user_id",)
     list_filter = ()

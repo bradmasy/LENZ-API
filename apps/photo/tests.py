@@ -65,6 +65,7 @@ class PhotoTests(TestCase):
                 "test.png", img_file.read(), content_type="image/png"
             )
 
+        # Post the photo
         response = self.client.post(
             reverse("photo-upload"),
             {
@@ -75,10 +76,10 @@ class PhotoTests(TestCase):
             },
             format="multipart",
         )
-
         photo_id = response.data.get("id")
-        response = self.client.get(reverse("photos"))
-        print(response.data)
+        url = reverse("photo-id", args=[int(photo_id)])
+        response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get("description"), "testdescription")
+        self.assertEqual(len(response.data.get("results")), 1)
+        self.assertEqual(response.data.get("results")[0].get("description"), "testdescription")
