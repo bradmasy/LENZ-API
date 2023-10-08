@@ -59,3 +59,5 @@ jobs:
         POSTGRES_HOST: "127.0.0.1"
       run: |
         python manage.py test apps.user.tests
+        python manage.py test apps.photo.tests
+        python manage.py test apps.photo_album.tests

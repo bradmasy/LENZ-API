@@ -18,7 +18,7 @@ import sys
 
 # Environment Variables for project
 
-ENV = "PROD"  # os.environ.get("ENV", "DEV")
+ENV = "DEV"  # os.environ.get("ENV", "DEV")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     "rest_framework_tracking",
     # Apps/Models
     "apps.user",
+    "apps.photo",
+    "apps.photo_album",
 ]
 
 MIDDLEWARE = [
@@ -124,11 +126,6 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-print(os.environ.get("POSTGRES_DB"))
-print(os.environ.get("POSTGRES_USER"))
-print(os.environ.get("POSTGRES_PASSWORD"))
-print(os.environ.get("POSTGRES_HOST"))
-print(os.environ.get("SECRET_KEY"))
 
 DATABASES = {
     "default": {
@@ -141,7 +138,6 @@ DATABASES = {
 }
 
 if ENV == "PROD" and "test" not in sys.argv:
-    print("PROD DATABASE")
     DATABASE_URL = os.environ.get("DATABASE_URL")
     db_from_env = dj_database_url.config(
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
