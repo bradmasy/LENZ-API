@@ -36,9 +36,9 @@ class PhotoTests(TestCase):
 
     def test_create_photo(self):
         """Test creating a new photo"""
-        with open("apps/photo/test_photos/test.png", "rb") as img_file:
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
             photo_file = SimpleUploadedFile(
-                "test.png", img_file.read(), content_type="image/png"
+                "test.jpg", img_file.read(), content_type="image/jpg"
             )
 
         response = self.client.post(
@@ -57,9 +57,9 @@ class PhotoTests(TestCase):
 
     def test_get_photo(self):
         """Test getting a photo"""
-        with open("apps/photo/test_photos/test.png", "rb") as img_file:
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
             photo_file = SimpleUploadedFile(
-                "test.png", img_file.read(), content_type="image/png"
+                "test.jpg", img_file.read(), content_type="image/jpg"
             )
 
         # Post the photo

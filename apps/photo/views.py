@@ -40,6 +40,5 @@ class PhotoViewByID(generics.ListAPIView):
     
     def get_queryset(self):
         id = self.kwargs.get('id', None)  
-        print("args ", self.kwargs)
         queryset = Photo.objects.by_id(id)
         return queryset
