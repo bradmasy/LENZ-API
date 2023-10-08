@@ -26,4 +26,5 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("", include("apps.user.urls")),
     path("", include("apps.photo.urls")),
+    path("", include("apps.photo_album.urls")),
 ] + router.urls
