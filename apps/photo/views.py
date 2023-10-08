@@ -56,3 +56,11 @@ class PhotoAlbumPhotoByIDView(generics.ListAPIView):
         id = self.kwargs.get("id", None)
         queryset = PhotoAlbumPhoto.objects.get_by_album_id(id=id)
         return queryset
+
+class PhotoAlbumPhotosView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhotoAlbumPhotoSerializer
+
+    def get_queryset(self):
+        queryset = PhotoAlbumPhoto.objects.all()
+        return queryset

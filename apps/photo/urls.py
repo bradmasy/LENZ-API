@@ -5,6 +5,7 @@ from .views import (
     PhotoViewByID,
     PhotoAlbumPhotoCreateView,
     PhotoAlbumPhotoByIDView,
+    PhotoAlbumPhotosView
 )
 
 urlpatterns = [
@@ -21,4 +22,5 @@ urlpatterns = [
         PhotoAlbumPhotoByIDView.as_view(),
         name="photo-album-photos-id",
     ),
+    path("photo-album-photos", PhotoAlbumPhotosView.as_view(), name="photo-album-photos"),
 ]
