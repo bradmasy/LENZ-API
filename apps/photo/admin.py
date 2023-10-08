@@ -28,7 +28,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 @admin.register(PhotoAlbumPhoto)
-class PhotoAlbumPhoto:
+class PhotoAlbumPhoto(admin.ModelAdmin):
     list_display = (
         "id",
         "photo_album_id",
