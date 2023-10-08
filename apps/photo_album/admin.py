@@ -23,3 +23,6 @@ class PhotoAlbumAdmin(admin.ModelAdmin):
 
     ordering = ("id",)
     list_filter = ()
+
+
+admin.site.register(PhotoAlbum)

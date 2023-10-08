@@ -66,6 +66,8 @@ class PhotoAlbumPhoto(models.Model):
         "photo_album.PhotoAlbum", on_delete=models.CASCADE
     )
     photo_id = models.ForeignKey("Photo", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ("photo_album_id", "photo_id")
