@@ -45,7 +45,3 @@ class PhotoAlbumPhoto(admin.ModelAdmin):
     )
     ordering = ("photo_album_id",)
     list_filter = ()
-
-
-admin.site.register(Photo)
-admin.site.register(PhotoAlbumPhoto)

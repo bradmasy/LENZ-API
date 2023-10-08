@@ -27,6 +27,3 @@ class UserAdmin(admin.ModelAdmin):
     )
     ordering = ("first_name",)
     list_filter = ()
-
-
-admin.site.register(User)
