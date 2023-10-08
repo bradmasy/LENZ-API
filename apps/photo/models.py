@@ -43,11 +43,26 @@ class Photo(models.Model):
     active = models.BooleanField(default=True)
 
 
+class PhotoAlbumPhotoQuerySet(QuerySet):
+    def if_active(self):
+        return self.filter(active=True)
+
+    def by_album_id(self, id):
+        return self.filter(id=id)
+    
+class PhotoAlbumPhotoManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return PhotoAlbumPhotoQuerySet(self.model, using=self._db)
+    def get_by_album_id(self, id):
+        return self.get_queryset().by_album_id(id)
+    
 class PhotoAlbumPhoto(models.Model):
+    objects = PhotoAlbumPhotoManager()
     id = models.AutoField(primary_key=True)
     photo_album_id = models.ForeignKey(
         "photo_album.PhotoAlbum", on_delete=models.CASCADE
     )
     photo_id = models.ForeignKey("Photo", on_delete=models.CASCADE)
 
-    unique_together = ("photo_album_id", "photo_id")
+    class Meta:
+        unique_together = ("photo_album_id", "photo_id")
