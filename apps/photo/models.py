@@ -11,6 +11,7 @@ class PhotoQuerySet(QuerySet):
     def by_id(self, id):
         return self.filter(id=id)
 
+
 class PhotoManager(models.Manager):
     def get_queryset(self) -> QuerySet:
         return PhotoQuerySet(self.model, using=self._db)
@@ -20,7 +21,7 @@ class PhotoManager(models.Manager):
 
     def by_tags(self, tags):
         pass
-    
+
     def by_id(self, id):
         return self.get_queryset().by_id(id)
 
@@ -36,7 +37,6 @@ class Photo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
     photo = models.BinaryField(blank=False, null=False)
-    # photo = models.ImageField(upload_to=f"user-photos/{user_id}", blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,3 +49,5 @@ class PhotoAlbumPhoto(models.Model):
         "photo_album.PhotoAlbum", on_delete=models.CASCADE
     )
     photo_id = models.ForeignKey("Photo", on_delete=models.CASCADE)
+
+    unique_together = ("photo_album_id", "photo_id")

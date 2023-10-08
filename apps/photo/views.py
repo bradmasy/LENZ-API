@@ -2,7 +2,7 @@ from rest_framework import generics
 from apps.photo.serializers import PhotoSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.photo.models import Photo
-from apps.photo.serializers import PhotoUploadSerializer
+from apps.photo.serializers import PhotoUploadSerializer, PhotoAlbumPhotoSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
@@ -42,3 +42,7 @@ class PhotoViewByID(generics.ListAPIView):
         id = self.kwargs.get('id', None)  
         queryset = Photo.objects.by_id(id)
         return queryset
+
+class PhotoAlbumPhotoCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhotoAlbumPhotoSerializer

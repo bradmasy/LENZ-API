@@ -26,7 +26,6 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
 
 
 class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
-    # user_id = serializers.IntegerField(required=True)
     user_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=True
     )
