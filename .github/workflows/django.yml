@@ -60,3 +60,4 @@ jobs:
       run: |
         python manage.py test apps.user.tests
         python manage.py test apps.photo.tests
+        python manage.py test apps.photo_album.tests

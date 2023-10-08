@@ -27,13 +27,14 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
 
 class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
     # user_id = serializers.IntegerField(required=True)
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=True)
+    user_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=True
+    )
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
     photos = PhotoSerializer(many=True, read_only=True)
 
     def validate(self, attrs):
-        print(attrs)
         if not attrs["user_id"]:
             raise serializers.ValidationError("User id is required")
         elif not attrs["title"]:
@@ -46,9 +47,8 @@ class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
                 user_id=validated_data["user_id"],
                 title=validated_data["title"],
                 description=validated_data["description"],
-                active=True, # always active on creation
+                active=True,  # always active on creation
             )
-        print("made it here")
 
         return photo_album
 
