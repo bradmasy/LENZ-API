@@ -74,6 +74,7 @@ class PhotoTests(TestCase):
             format="multipart",
         )
         photo_id = response.data.get("id")
+        print(response.data)
         url = reverse("photo-id", args=[int(photo_id)])
         response = self.client.get(url)
 
