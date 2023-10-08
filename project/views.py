@@ -9,7 +9,7 @@ def api_root(request):
         {
             "users": reverse("users", request=request),
             "photos": reverse("photos", request=request),
-            "photo-album-photos": reverse("photo-album-photos", request=request),
+            "photo-album-photos": reverse("photo-album-photos-list", request=request),
             "photo-albums": reverse("photo-album-list", request=request),
         }
     )
