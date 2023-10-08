@@ -13,11 +13,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import sys
 
 
 # Environment Variables for project
 
-ENV = "PROD"  # os.environ.get("ENV", "DEV")
+ENV = "DEV"  # os.environ.get("ENV", "DEV")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -50,18 +51,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
     # REST Framework
-    
     "django_extensions",
     "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_tracking",
-    
     # Apps/Models
-    
     "apps.user",
+    "apps.photo",
+    "apps.photo_album",
 ]
 
 MIDDLEWARE = [
@@ -126,6 +125,7 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -136,17 +136,12 @@ DATABASES = {
     }
 }
 
-if ENV == "PROD":
-    print("PROD DATABASE")
+if ENV == "PROD" and "test" not in sys.argv:
     DATABASE_URL = os.environ.get("DATABASE_URL")
     db_from_env = dj_database_url.config(
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
     )
     DATABASES["default"].update(db_from_env)
-
-DATABASES["default"]["TEST"] = {
-    "NAME": "test",  # Specify the name for your test database
-}
 
 
 # Password validation
@@ -208,7 +203,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://lenz-5f9c8ee2c363.herokuapp.com/",
     "https://*lenz-5f9c8ee2c363.herokuapp.com/",
-    "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/"
+    "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/",
 ]
 
 # CSRF_COOKIE_SECURE = False
