@@ -51,7 +51,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name"] # when creating super users, this is what will be prompted on the CLI
+    REQUIRED_FIELDS = [
+        "username",
+        "first_name",
+        "last_name",
+    ]  # when creating super users, this is what will be prompted on the CLI
 
 
 class Blogger(User):
