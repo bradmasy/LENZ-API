@@ -41,7 +41,7 @@ class Photo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
-
+    title = models.CharField(max_length=100, blank=False, null=False)
 
 class PhotoAlbumPhotoQuerySet(QuerySet):
     def if_active(self):

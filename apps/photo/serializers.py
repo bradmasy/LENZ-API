@@ -8,7 +8,7 @@ from django.db import transaction
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ("id", "description", "photo", "created_at", "updated_at")
+        fields = ("id", "description","title", "photo", "created_at", "updated_at")
 
 
 class PhotoUploadSerializer(serializers.ModelSerializer):
@@ -16,6 +16,7 @@ class PhotoUploadSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField()
     description = serializers.CharField()
     active = serializers.BooleanField()
+    title = serializers.CharField()
 
     def create(self, validated_data):
         validated_data["user_id"] = User.objects.get(id=validated_data["user_id"]).id
@@ -25,6 +26,7 @@ class PhotoUploadSerializer(serializers.ModelSerializer):
             photo=image_bytes,
             description=validated_data["description"],
             active=validated_data["active"],
+            title=validated_data["title"]
         )
 
         return photo
@@ -38,6 +40,7 @@ class PhotoUploadSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "user_id",
+            "title",
             "description",
             "active",
             "photo",
