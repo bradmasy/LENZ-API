@@ -43,6 +43,7 @@ class Photo(models.Model):
     active = models.BooleanField(default=True)
     title = models.CharField(max_length=100, blank=False, null=False)
 
+
 class PhotoAlbumPhotoQuerySet(QuerySet):
     def if_active(self):
         return self.filter(active=True)

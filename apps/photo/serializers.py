@@ -8,7 +8,7 @@ from django.db import transaction
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ("id", "description","title", "photo", "created_at", "updated_at")
+        fields = ("id", "description", "title", "photo", "created_at", "updated_at")
 
 
 class PhotoUploadSerializer(serializers.ModelSerializer):
@@ -26,7 +26,7 @@ class PhotoUploadSerializer(serializers.ModelSerializer):
             photo=image_bytes,
             description=validated_data["description"],
             active=validated_data["active"],
-            title=validated_data["title"]
+            title=validated_data["title"],
         )
 
         return photo
