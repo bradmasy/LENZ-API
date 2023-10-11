@@ -45,6 +45,7 @@ class PhotoTests(TestCase):
             reverse("photo-upload"),
             {
                 "user_id": self.user_id,
+                "title": "my title",
                 "photo": photo_file,
                 "description": "testdescription",
                 "active": True,
@@ -67,6 +68,7 @@ class PhotoTests(TestCase):
             reverse("photo-upload"),
             {
                 "user_id": self.user_id,
+                "title": "my title",
                 "photo": photo_file,
                 "description": "testdescription",
                 "active": True,
@@ -138,6 +140,7 @@ class PhotoAlbumPhotoTests(TestCase):
             reverse("photo-upload"),
             {
                 "user_id": self.user_id,
+                "title": "my photo",
                 "photo": photo_file,
                 "description": "testdescription",
                 "active": True,
@@ -174,7 +177,6 @@ class PhotoAlbumPhotoTests(TestCase):
             payload,
             format="json",
         )
-
         id = response.data.get("id")
         url = reverse("photo-album-photos-id", args=[int(id)])
 
