@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     "apps.user",
     "apps.photo",
     "apps.photo_album",
-    "apps.journey"
+    "apps.journey",
 ]
 
 MIDDLEWARE = [
