@@ -40,6 +40,9 @@ class Journey(models.Model):
     active = models.BooleanField(default=True)
     size = models.CharField(max_length=100, choices=choices, default="S")
 
+    class Meta:
+        unique_together = ("title", "user_id")
+
 
 class PhotoAlbumJourney(models.Model):
     """Represents the relationship between a photo album and a journey.
@@ -53,3 +56,6 @@ class PhotoAlbumJourney(models.Model):
     photo_album_id = models.ForeignKey(PhotoAlbum, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("journey_id", "photo_album_id")
