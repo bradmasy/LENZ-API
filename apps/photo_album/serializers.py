@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from apps.photo_album.models import PhotoAlbum
-from apps.photo.serializers import PhotoSerializer
+from apps.photo.serializers import PhotoSerializer, PhotoAlbumPhotoEmbeddedSerializer
+from apps.photo.models import PhotoAlbumPhoto
 from apps.user.models import User
 from django.db import transaction
 
@@ -8,7 +9,12 @@ from django.db import transaction
 class PhotoAlbumSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
-    photos = PhotoSerializer(many=True, read_only=True)
+    photo_album_photos = PhotoAlbumPhotoEmbeddedSerializer(many=True, read_only=True)
+
+    def to_representation(self, instance):
+        photo_album_photos = PhotoAlbumPhoto.objects.get_by_album_id(id=instance.id)
+        instance.photo_album_photos = photo_album_photos
+        return super().to_representation(instance)
 
     class Meta:
         model = PhotoAlbum
@@ -18,7 +24,7 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
             "description",
             "created_at",
             "updated_at",
-            "photos",
+            "photo_album_photos",
             "active",
         )
 

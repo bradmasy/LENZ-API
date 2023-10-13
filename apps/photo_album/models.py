@@ -12,6 +12,9 @@ class PhotoAlbumQuerySet(QuerySet):
     def all_photo_albums(self):
         return self.all()
 
+    def get_by_id(self, id):
+        return self.filter(id=id)
+
 
 class PhotoAlbumManager(models.Manager):
     """A manager for the PhotoAlbum model.
@@ -25,6 +28,9 @@ class PhotoAlbumManager(models.Manager):
 
     def all_albums(self):
         return self.get_queryset().all_photo_albums()
+
+    def by_id(self, id):
+        return self.get_queryset().get_by_id(id=id)
 
 
 class PhotoAlbum(models.Model):

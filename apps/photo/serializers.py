@@ -49,13 +49,35 @@ class PhotoUploadSerializer(serializers.ModelSerializer):
         )
 
 
+class PhotoAlbumPhotoEmbeddedSerializer(serializers.ModelSerializer):
+    photo = PhotoSerializer(read_only=True)
+
+    def to_representation(self, instance):
+        photo = Photo.objects.get(id=instance.photo_id.id)
+        instance.photo = photo
+
+        return super().to_representation(instance)
+
+    class Meta:
+        model = PhotoAlbumPhoto
+        fields = ("id", "photo")
+
+
 class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
-    photo_id = serializers.PrimaryKeyRelatedField(
-        queryset=Photo.objects.all(), required=True
-    )
+    # photo_id = serializers.PrimaryKeyRelatedField(
+    #     queryset=Photo.objects.all(), required=True
+    # )
     photo_album_id = serializers.PrimaryKeyRelatedField(
         queryset=PhotoAlbum.objects.all(), required=True
     )
+
+    photo = PhotoSerializer(read_only=True)
+
+    def to_representation(self, instance):
+        photo = Photo.objects.get(id=instance.photo_id.id)
+        instance.photo = photo
+
+        return super().to_representation(instance)
 
     def validate(self, attrs):
         if not attrs["photo_album_id"]:
@@ -72,5 +94,5 @@ class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PhotoAlbumPhoto
-        fields = ("id", "photo_album_id", "photo_id")
+        fields = ("id", "photo_album_id", "photo")
         unique_together = ("photo_album_id", "photo_id")

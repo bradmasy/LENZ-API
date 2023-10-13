@@ -16,3 +16,13 @@ class PhotoAlbumsView(generics.ListAPIView):
 class PhotoAlbumCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PhotoAlbumCreateSerializer
+
+
+class PhotoAlbumByIDView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhotoAlbumSerializer
+
+    def get_queryset(self):
+        id = self.kwargs.get("id", None)
+        queryset = PhotoAlbum.objects.by_id(id=id)
+        return queryset

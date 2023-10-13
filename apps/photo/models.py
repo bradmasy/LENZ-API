@@ -49,6 +49,9 @@ class PhotoAlbumPhotoQuerySet(QuerySet):
         return self.filter(active=True)
 
     def by_album_id(self, id):
+        return self.filter(photo_album_id=id)
+    
+    def by_id(self, id):
         return self.filter(id=id)
 
 
