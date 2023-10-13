@@ -27,5 +27,4 @@ urlpatterns = [
         PhotoAlbumPhotosView.as_view(),
         name="photo-album-photos-list",
     ),
-    
 ]
