@@ -68,7 +68,7 @@ class UserSignupView(generics.CreateAPIView):
 
             user_data = request.data
             user = User.objects.create_user(**user_data)
-            serialized = UserSerializer(user).data
+            serialized = UserSerializer(user).data  
         except Exception as e:
             return Response(
                 {"error": "Error creating user.", "message": f"{e}"},

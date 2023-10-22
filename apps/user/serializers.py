@@ -61,4 +61,5 @@ class UserSignupSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # not adding any particular checking right now, the serializer will throw an error
         # if the above fields are not provided in the post request to /users
+        
         return super().create(validated_data)
