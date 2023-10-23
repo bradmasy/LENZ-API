@@ -6,8 +6,6 @@ from apps.photo.serializers import PhotoUploadSerializer, PhotoAlbumPhotoSeriali
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-from apps.user.models import User
-import io
 
 
 class PhotoView(generics.ListAPIView):

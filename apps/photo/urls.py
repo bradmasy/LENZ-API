@@ -10,6 +10,6 @@ urlpatterns = [
         PhotoAlbumPhotoCreateView.as_view(),
         name="photo-album-photos",
     ),
-    path("photo-album-photo/<int:id>", PhotoAlbumPhotoByIDView.as_view(), name="photo-album-photos-id")
+    # path("photo-album-photo/<int:id>", PhotoAlbumPhotoByIDView.as_view(), name="photo-album-photos-id")
     
 ]

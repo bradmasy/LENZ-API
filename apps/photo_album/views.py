@@ -4,15 +4,124 @@ from apps.photo_album.models import PhotoAlbum
 from apps.photo_album.serializers import (
     PhotoAlbumSerializer,
     PhotoAlbumCreateSerializer,
+    PhotoAlbumEditSerializer,
 )
+from rest_framework.response import Response
+from django.db import transaction
+from rest_framework import status
+from rest_framework.decorators import permission_classes
+from libs.permissions import UserPermissions
+from rest_framework import viewsets
+
+# class PhotoAlbumsView(generics.ListAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = PhotoAlbumSerializer
+#     queryset = PhotoAlbum.objects.all()
 
 
-class PhotoAlbumsView(generics.ListAPIView):
+class PhotoAlbumsView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
+
     serializer_class = PhotoAlbumSerializer
     queryset = PhotoAlbum.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        """GET Request for Photo Albums.
+
+        Args:
+            request (request): the request data
+
+        Returns:
+            Response: on success, all the photo albums.
+        """
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """POST Method for Photo Album.
+
+        Args:
+            request (request): the request data
+
+        Returns:
+            Response: on success, the created photo album.
+        """
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            response_data = {
+                "message": "Successfully Created Photo Album",
+                "photo_album": serializer.data,  # Use serializer.data to get the serialized representation
+            }
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response_data, status=status.HTTP_201_CREATED)
+
+    @transaction.atomic
+    def put(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        except Exception as e:
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"message": "PUT Request Successful", "photo_album": serializer.data},
+            status=status.HTTP_200_OK,
+        )
+
+    @transaction.atomic
+    def patch(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            response_data = {
+                "message": "Successfully Updated Photo Album",
+                "photo_album": serializer.data,
+            }
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def delete():
+        pass
 
 
 class PhotoAlbumCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PhotoAlbumCreateSerializer
+
+
+class PhotoAlbumEditView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhotoAlbumEditSerializer
+    queryset = PhotoAlbum.objects.all()
+
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        print("hello")
+        print(request.data)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        # try:
+        #     photo_album = PhotoAlbum.objects.get(id=request.data.get("id",None))
+        # except Exception as e:
+        #     return Response({"error":f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # photo_album.objects.update(**request.data)
+
+        return Response("Successful", status=status.HTTP_200_OK)
+
+    # def get_queryset(self):
+    #     print(self.kwargs)
+    #     id = self.kwargs.get("id", None)
+    #     queryset = PhotoAlbum.objects.get(id=id)
+    #     return queryset
