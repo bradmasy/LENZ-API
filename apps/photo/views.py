@@ -6,8 +6,6 @@ from apps.photo.serializers import PhotoUploadSerializer, PhotoAlbumPhotoSeriali
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-from apps.user.models import User
-import io
 
 
 class PhotoView(generics.ListAPIView):
@@ -57,4 +55,13 @@ class PhotoAlbumPhotoByIDView(generics.ListAPIView):
     def get_queryset(self):
         id = self.kwargs.get("id", None)
         queryset = PhotoAlbumPhoto.objects.get_by_album_id(id=id)
+        return queryset
+
+
+class PhotoAlbumPhotosView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhotoAlbumPhotoSerializer
+
+    def get_queryset(self):
+        queryset = PhotoAlbumPhoto.objects.all()
         return queryset

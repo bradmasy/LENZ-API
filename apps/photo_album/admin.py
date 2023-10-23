@@ -12,7 +12,7 @@ class PhotoAlbumAdmin(admin.ModelAdmin):
         "updated_at",
         "active",
     )
-    
+
     search_fields = (
         "id",
         "title",
@@ -20,6 +20,6 @@ class PhotoAlbumAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
-    
-    ordering=("id",)
+
+    ordering = ("id",)
     list_filter = ()
