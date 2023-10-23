@@ -92,37 +92,8 @@ class PhotoAlbumsView(generics.GenericAPIView):
         except Exception as e:
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"message": "Photo Album Successfully Deleted", "photo_album": serializer.data}
+            {
+                "message": "Photo Album Successfully Deleted",
+                "photo_album": serializer.data,
+            }
         )
-
-
-class PhotoAlbumCreateView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = PhotoAlbumCreateSerializer
-
-
-class PhotoAlbumEditView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = PhotoAlbumEditSerializer
-    queryset = PhotoAlbum.objects.all()
-
-    @transaction.atomic
-    def update(self, request, *args, **kwargs):
-        print("hello")
-        print(request.data)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        # try:
-        #     photo_album = PhotoAlbum.objects.get(id=request.data.get("id",None))
-        # except Exception as e:
-        #     return Response({"error":f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # photo_album.objects.update(**request.data)
-
-        return Response("Successful", status=status.HTTP_200_OK)
-
-    # def get_queryset(self):
-    #     print(self.kwargs)
-    #     id = self.kwargs.get("id", None)
-    #     queryset = PhotoAlbum.objects.get(id=id)
-    #     return queryset

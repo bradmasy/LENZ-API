@@ -28,13 +28,14 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        print(attrs)
         return super().validate(attrs)
-    
+
     def delete_related_objects(self, instance):
-        photo_album_journeys = PhotoAlbumJourney.objects.filter(photo_album_id=instance.id)
+        photo_album_journeys = PhotoAlbumJourney.objects.filter(
+            photo_album_id=instance.id
+        )
         photo_album_journeys.delete()
-    
+
     def delete(self, instance):
         self.delete_related_objects(instance)
         instance.delete()
