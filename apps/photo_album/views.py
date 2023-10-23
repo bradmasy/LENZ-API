@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from apps.photo_album.models import PhotoAlbum
+from apps.journey.models import PhotoAlbumJourney
 from apps.photo_album.serializers import (
     PhotoAlbumSerializer,
     PhotoAlbumCreateSerializer,
@@ -13,7 +14,6 @@ from rest_framework import status
 
 class PhotoAlbumsView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-
     serializer_class = PhotoAlbumSerializer
     queryset = PhotoAlbum.objects.all()
 
@@ -86,15 +86,13 @@ class PhotoAlbumsView(generics.GenericAPIView):
     def delete(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
-            print(instance)
+            instance_copy = instance
             serializer = self.get_serializer(instance)
-
             serializer.delete(instance)
-
         except Exception as e:
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"message": "Photo Album Successfully Deleted", "photo_album": serializer}
+            {"message": "Photo Album Successfully Deleted", "photo_album": serializer.data}
         )
 
 
