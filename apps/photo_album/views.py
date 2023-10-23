@@ -30,7 +30,6 @@ class PhotoAlbumsView(generics.GenericAPIView):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
-    @transaction.atomic
     def post(self, request, *args, **kwargs):
         """POST Method for Photo Album.
 
@@ -43,23 +42,24 @@ class PhotoAlbumsView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
 
         try:
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            response_data = {
-                "message": "Successfully Created Photo Album",
-                "photo_album": serializer.data,  # Use serializer.data to get the serialized representation
-            }
+            with transaction.atomic():
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                response_data = {
+                    "message": "Successfully Created Photo Album",
+                    "photo_album": serializer.data,  # Use serializer.data to get the serialized representation
+                }
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
-    @transaction.atomic
     def put(self, request, *args, **kwargs):
         try:
-            instance = self.get_object()
-            serializer = self.get_serializer(instance, data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            with transaction.atomic():
+                instance = self.get_object()
+                serializer = self.get_serializer(instance, data=request.data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
         except Exception as e:
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(
@@ -67,28 +67,29 @@ class PhotoAlbumsView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
 
-    @transaction.atomic
     def patch(self, request, *args, **kwargs):
         try:
-            instance = self.get_object()
-            serializer = self.get_serializer(instance, data=request.data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            response_data = {
-                "message": "Successfully Updated Photo Album",
-                "photo_album": serializer.data,
-            }
+            with transaction.atomic():
+                instance = self.get_object()
+                serializer = self.get_serializer(
+                    instance, data=request.data, partial=True
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                response_data = {
+                    "message": "Successfully Updated Photo Album",
+                    "photo_album": serializer.data,
+                }
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_200_OK)
 
-    @transaction.atomic
     def delete(self, request, *args, **kwargs):
         try:
-            instance = self.get_object()
-            instance_copy = instance
-            serializer = self.get_serializer(instance)
-            serializer.delete(instance)
+            with transaction.atomic():
+                instance = self.get_object()
+                serializer = self.get_serializer(instance)
+                serializer.delete(instance)
         except Exception as e:
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(

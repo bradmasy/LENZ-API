@@ -6,14 +6,48 @@ from apps.photo.serializers import PhotoUploadSerializer, PhotoAlbumPhotoSeriali
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
+from django.db import transaction
+
+# class PhotoView(generics.ListAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = PhotoSerializer
+
+#     # make this related interests photos
+#     queryset = Photo.objects.all()
 
 
-class PhotoView(generics.ListAPIView):
+class PhotoView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PhotoSerializer
-
-    # make this related interests photos
     queryset = Photo.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        try:
+            with transaction.atomic():
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                response_data = {
+                    "message": "Successfully Created a Photo",
+                    "photo": serializer.data,  # Use serializer.data to get the serialized representation
+                }
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response_data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        pass
+
+    def patch(self, request, *args, **kwargs):
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        pass
 
 
 class PhotoUpload(generics.CreateAPIView):
