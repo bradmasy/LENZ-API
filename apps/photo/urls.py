@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import PhotoView, PhotoUpload, PhotoViewByID, PhotoAlbumPhotoCreateView, PhotoAlbumPhotoByIDView
+from .views import (
+    PhotoView,
+    PhotoUpload,
+    PhotoViewByID,
+    PhotoAlbumPhotoCreateView,
+    PhotoAlbumPhotoByIDView,
+    PhotoAlbumPhotosView,
+)
 
 urlpatterns = [
     path("photos", PhotoView.as_view(), name="photos"),

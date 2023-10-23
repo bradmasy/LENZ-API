@@ -1,9 +1,7 @@
 from rest_framework import serializers
 from apps.photo_album.models import PhotoAlbum
-from apps.photo.models import Photo
 from apps.photo.serializers import PhotoSerializer
 from apps.user.models import User
-from apps.user.serializers import UserSerializer
 from django.db import transaction
 
 
