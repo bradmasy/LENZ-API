@@ -9,14 +9,6 @@ from apps.photo_album.serializers import (
 from rest_framework.response import Response
 from django.db import transaction
 from rest_framework import status
-from rest_framework.decorators import permission_classes
-from libs.permissions import UserPermissions
-from rest_framework import viewsets
-
-# class PhotoAlbumsView(generics.ListAPIView):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = PhotoAlbumSerializer
-#     queryset = PhotoAlbum.objects.all()
 
 
 class PhotoAlbumsView(generics.GenericAPIView):
@@ -91,8 +83,19 @@ class PhotoAlbumsView(generics.GenericAPIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
     @transaction.atomic
-    def delete():
-        pass
+    def delete(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            print(instance)
+            serializer = self.get_serializer(instance)
+
+            serializer.delete(instance)
+
+        except Exception as e:
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"message": "Photo Album Successfully Deleted", "photo_album": serializer}
+        )
 
 
 class PhotoAlbumCreateView(generics.CreateAPIView):

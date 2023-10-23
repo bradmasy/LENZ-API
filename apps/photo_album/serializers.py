@@ -14,7 +14,7 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=True
     )
-        
+
     class Meta:
         model = PhotoAlbum
         fields = (
@@ -27,14 +27,13 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
             "photos",
             "active",
         )
-        
+
     def validate(self, attrs):
         print(attrs)
         return super().validate(attrs)
-    
-    # def update(self, instance, validated_data):
-    #     print("hello")
-    #     return super().update(instance, validated_data)
+
+    def delete(self, instance):
+        instance.delete()
 
 
 class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
@@ -76,12 +75,13 @@ class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
             "active",
         )
 
+
 class PhotoAlbumEditSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
     photos = PhotoSerializer(many=True, read_only=True)
     id = serializers.IntegerField(required=True)
-    
+
     class Meta:
         model = PhotoAlbum
         fields = (
@@ -93,11 +93,12 @@ class PhotoAlbumEditSerializer(serializers.ModelSerializer):
             "photos",
             "active",
         )
-    def validate(self, attrs): 
+
+    def validate(self, attrs):
         print("validate")
         print(attrs)
         return super().validate(attrs)
-    
+
     def update(self, instance, validated_data):
         print("hello")
         return super().update(instance, validated_data)
