@@ -2,6 +2,11 @@ from django.db import models
 from django.db.models.query import QuerySet
 
 # Create your models here.
+class Tag(models.Model):
+    name = models.CharField(max_length=40, unique=True, blank=False, null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class PhotoQuerySet(QuerySet):
@@ -10,6 +15,9 @@ class PhotoQuerySet(QuerySet):
 
     def by_id(self, id):
         return self.filter(id=id)
+
+    def by_tag(self, tags):
+        return self.filter(tags in tags)
 
 
 class PhotoManager(models.Manager):
@@ -37,6 +45,7 @@ class Photo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
     photo = models.BinaryField(blank=False, null=False)
+    tags = models.ManyToManyField(Tag, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
