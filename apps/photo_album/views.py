@@ -96,5 +96,6 @@ class PhotoAlbumsView(generics.GenericAPIView):
             {
                 "message": "Photo Album Successfully Deleted",
                 "photo_album": serializer.data,
-            }
+            },
+            status=status.HTTP_200_OK,
         )
