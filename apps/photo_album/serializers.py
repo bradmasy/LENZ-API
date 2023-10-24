@@ -32,9 +32,11 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         photos = PhotoAlbumPhoto.objects.filter(photo_album_id=instance.id)
         photo_serializer = PhotoAlbumPhotoSerializer(photos, many=True)
-        representation['photos'] = photo_serializer.data  # Update the 'photos' key in the representation
+        representation[
+            "photos"
+        ] = photo_serializer.data  # Update the 'photos' key in the representation
         return representation
-    
+
     def validate(self, attrs):
         return super().validate(attrs)
 
