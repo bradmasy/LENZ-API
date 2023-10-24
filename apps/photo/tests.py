@@ -48,7 +48,6 @@ class PhotoTests(TestCase):
                 "photo": photo_file,
                 "description": "test description",
                 "active": True,
-                "title": "my photo",
             },
             format="multipart",
         )
@@ -73,7 +72,6 @@ class PhotoTests(TestCase):
                 "photo": photo_file,
                 "description": "test description",
                 "active": True,
-                "title": "my photo",
             },
             format="multipart",
         )
