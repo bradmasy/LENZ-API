@@ -50,6 +50,7 @@ class PhotoAlbum(models.Model):
     active = models.BooleanField(default=True)
 
     def model_name(self) -> str:
-        return ("Photo Album","photo_album")
+        return ("Photo Album", "photo_album")
+
     class Meta:
         unique_together = ("user_id", "title")

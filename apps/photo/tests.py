@@ -48,7 +48,6 @@ class PhotoTests(TestCase):
                 "photo": photo_file,
                 "description": "test description",
                 "active": True,
-                "title": "my photo",
             },
             format="multipart",
         )
@@ -73,7 +72,6 @@ class PhotoTests(TestCase):
                 "photo": photo_file,
                 "description": "test description",
                 "active": True,
-                "title": "my photo",
             },
             format="multipart",
         )
@@ -130,7 +128,6 @@ class PhotoAlbumPhotoTests(TestCase):
             },
             format="json",
         )
-
         self.album = response.data.get("photo_album", None)
 
         with open("apps/photo/test_photos/test.jpg", "rb") as img_file:

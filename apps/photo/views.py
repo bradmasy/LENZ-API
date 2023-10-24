@@ -3,7 +3,6 @@ from apps.photo.serializers import PhotoSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.photo.models import Photo, PhotoAlbumPhoto
 from apps.photo.serializers import PhotoUploadSerializer, PhotoAlbumPhotoSerializer
-from apps.user.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser

@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from apps.photo_album.models import PhotoAlbum
-from apps.photo.serializers import PhotoSerializer
-from apps.journey.models import PhotoAlbumJourney
+from apps.photo.serializers import PhotoSerializer, PhotoAlbumPhotoSerializer
 from apps.photo.models import PhotoAlbumPhoto
+from apps.journey.models import PhotoAlbumJourney
 from apps.user.models import User
 from django.db import transaction
 
@@ -21,12 +21,21 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
             "id",
             "user_id",
             "title",
+            "photos",
             "description",
             "created_at",
             "updated_at",
-            "photo_album_photos",
             "active",
         )
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        photos = PhotoAlbumPhoto.objects.filter(photo_album_id=instance.id)
+        photo_serializer = PhotoAlbumPhotoSerializer(photos, many=True)
+        representation[
+            "photos"
+        ] = photo_serializer.data  # Update the 'photos' key in the representation
+        return representation
 
     def validate(self, attrs):
         return super().validate(attrs)
@@ -40,6 +49,17 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
     def delete(self, instance):
         self.delete_related_objects(instance)
         instance.delete()
+
+    def create(self, validated_data):
+        with transaction.atomic():
+            photo_album = PhotoAlbum.objects.create(
+                user_id=validated_data["user_id"],
+                title=validated_data["title"],
+                description=validated_data["description"],
+                active=True,  # always active on creation
+            )
+
+        return photo_album
 
 
 class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
