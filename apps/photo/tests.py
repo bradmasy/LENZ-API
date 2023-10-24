@@ -125,7 +125,6 @@ class PhotoAlbumPhotoTests(TestCase):
                 "title": "testtitle",
                 "description": "testdescription",
                 "active": True,
-                "title": "my photo album",
             },
             format="json",
         )
