@@ -128,7 +128,6 @@ class PhotoAlbumPhotoTests(TestCase):
             },
             format="json",
         )
-
         self.album = response.data.get("photo_album", None)
 
         with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
