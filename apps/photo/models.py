@@ -10,6 +10,9 @@ class PhotoQuerySet(QuerySet):
 
     def by_id(self, id):
         return self.filter(id=id)
+    
+    def get_photo_count(self):
+        return self.all().count()
 
 
 class PhotoManager(models.Manager):

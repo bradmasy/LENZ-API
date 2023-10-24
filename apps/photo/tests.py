@@ -40,20 +40,22 @@ class PhotoTests(TestCase):
             photo_file = SimpleUploadedFile(
                 "test.jpg", img_file.read(), content_type="image/jpg"
             )
-
         response = self.client.post(
-            reverse("photo-upload"),
+            reverse("photo"),
             {
                 "user_id": self.user_id,
                 "photo": photo_file,
-                "description": "testdescription",
+                "description": "test description",
                 "active": True,
+                "title": "my photo",
             },
             format="multipart",
         )
 
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data.get("description"), "testdescription")
+        self.assertEqual(
+            response.data.get("photo").get("description"), "test description"
+        )
 
     def test_get_photo(self):
         """Test getting a photo"""
@@ -62,25 +64,25 @@ class PhotoTests(TestCase):
                 "test.jpg", img_file.read(), content_type="image/jpg"
             )
 
-        # Post the photo
         response = self.client.post(
-            reverse("photo-upload"),
+            reverse("photo"),
             {
                 "user_id": self.user_id,
                 "photo": photo_file,
-                "description": "testdescription",
+                "description": "test description",
                 "active": True,
+                "title": "my photo",
             },
             format="multipart",
         )
-        photo_id = response.data.get("id")
-        url = reverse("photo-id", args=[int(photo_id)])
+
+        url = reverse("photo")
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data.get("results")), 1)
         self.assertEqual(
-            response.data.get("results")[0].get("description"), "testdescription"
+            response.data.get("results")[0].get("description"), "test description"
         )
 
 
@@ -117,17 +119,18 @@ class PhotoAlbumPhotoTests(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
                 "description": "testdescription",
                 "active": True,
+                "title": "my photo album",
             },
             format="json",
         )
 
-        self.album = response.data
+        self.album = response.data.get("photo_album", None)
 
         with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
             photo_file = SimpleUploadedFile(
@@ -135,17 +138,17 @@ class PhotoAlbumPhotoTests(TestCase):
             )
 
         response = self.client.post(
-            reverse("photo-upload"),
+            reverse("photo"),
             {
                 "user_id": self.user_id,
                 "photo": photo_file,
                 "description": "testdescription",
                 "active": True,
+                "title": "my photo",
             },
             format="multipart",
         )
-
-        self.photo = response.data
+        self.photo = response.data.get("photo", None)
 
     def test_create_photo_album_photo(self):
         payload = {
@@ -154,14 +157,19 @@ class PhotoAlbumPhotoTests(TestCase):
         }
 
         response = self.client.post(
-            reverse("photo-album-photos"),
+            reverse("photo-album-photo"),
             payload,
             format="json",
         )
 
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data.get("photo_id"), self.photo.get("id"))
-        self.assertEqual(response.data.get("photo_album_id"), self.album.get("id"))
+        self.assertEqual(
+            response.data.get("photo_album_photo").get("photo_id"), self.photo.get("id")
+        )
+        self.assertEqual(
+            response.data.get("photo_album_photo").get("photo_album_id"),
+            self.album.get("id"),
+        )
 
     def test_get_photo_album_photo(self):
         payload = {
@@ -170,16 +178,12 @@ class PhotoAlbumPhotoTests(TestCase):
         }
 
         response = self.client.post(
-            reverse("photo-album-photos"),
-            payload,
-            format="json",
+            reverse("photo-album-photo"), payload, format="json"
         )
 
-        id = response.data.get("id")
-        url = reverse("photo-album-photos-id", args=[int(id)])
+        url = reverse("photo-album-photo")
 
         response = self.client.get(url)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data.get("results")), 1)
         self.assertEqual(

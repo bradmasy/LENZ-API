@@ -37,7 +37,7 @@ class PhotoAlbumTests(TestCase):
         """Test creating a new photo album"""
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
@@ -54,7 +54,7 @@ class PhotoAlbumTests(TestCase):
         """Test getting a photo album"""
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
@@ -65,7 +65,23 @@ class PhotoAlbumTests(TestCase):
         )
 
         response = self.client.get(reverse("photo-album-list"))
-        print(response.data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data.get("results")), 1)
         self.assertEqual(response.data.get("results")[0].get("title"), "testtitle")
+
+
+def test_update_photo(self):
+    "Test updating a photo"
+
+    response = self.client.post(
+        reverse("photo-album"),
+        {
+            "user_id": self.user_id,
+            "title": "testtitle",
+            "description": "testdescription",
+            "active": True,
+        },
+        format="json",
+    )
+    
+    id = response.data.get("resul")

@@ -6,17 +6,13 @@ from .views import (
     PhotoAlbumPhotoCreateView,
     PhotoAlbumPhotoByIDView,
     PhotoAlbumPhotosView,
+    PhotoAlbumPhotoView
 )
 
 urlpatterns = [
-    path("photos", PhotoView.as_view(), name="photos"),
-    path("photo-upload", PhotoUpload.as_view(), name="photo-upload"),
-    path("photo/<int:id>", PhotoViewByID.as_view(), name="photo-id"),
-    path(
-        "photo-album-photo",
-        PhotoAlbumPhotoCreateView.as_view(),
-        name="photo-album-photos",
-    ),
-    # path("photo-album-photo/<int:id>", PhotoAlbumPhotoByIDView.as_view(), name="photo-album-photos-id")
-    
+    path("photo", PhotoView.as_view(), name="photo"),
+    path("photo/<int:id>", PhotoView.as_view(), name="photo-by-id"),
+    path("photo-album-photo", PhotoAlbumPhotoView.as_view(), name ="photo-album-photo"),
+    path("photo-album-photo/<int:pk>", PhotoAlbumPhotoView.as_view(), name ="photo-album-photo-by-id")
+
 ]
