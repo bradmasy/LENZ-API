@@ -1,7 +1,5 @@
 from django.urls import path
-from apps.photo_album.views import (
-    PhotoAlbumsView,
-)
+from apps.photo_album.views import PhotoAlbumsView
 
 urlpatterns = [
     path("photo-album", PhotoAlbumsView.as_view(), name="photo-album"),

@@ -44,6 +44,7 @@ class PhotoTests(TestCase):
             reverse("photo"),
             {
                 "user_id": self.user_id,
+                "title": "my title",
                 "photo": photo_file,
                 "description": "test description",
                 "active": True,
@@ -68,6 +69,7 @@ class PhotoTests(TestCase):
             reverse("photo"),
             {
                 "user_id": self.user_id,
+                "title": "my title",
                 "photo": photo_file,
                 "description": "test description",
                 "active": True,
@@ -140,6 +142,7 @@ class PhotoAlbumPhotoTests(TestCase):
             reverse("photo"),
             {
                 "user_id": self.user_id,
+                "title": "my photo",
                 "photo": photo_file,
                 "description": "testdescription",
                 "active": True,
@@ -181,7 +184,6 @@ class PhotoAlbumPhotoTests(TestCase):
         )
 
         url = reverse("photo-album-photo")
-
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data.get("results")), 1)
