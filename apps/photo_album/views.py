@@ -16,7 +16,7 @@ class PhotoAlbumsView(generics.GenericAPIView):
     pagination_class = CustomLimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        id = kwargs.get("id", None)
+        id = kwargs.get("pk", None)
 
         if id != None:
             queryset = PhotoAlbum.objects.get(id=id)
@@ -32,20 +32,6 @@ class PhotoAlbumsView(generics.GenericAPIView):
         except Exception as e:
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return response
-
-
-    # def get(self, request, *args, **kwargs):
-    #     """GET Request for Photo Albums.
-
-    #     Args:
-    #         request (request): the request data
-
-    #     Returns:
-    #         Response: on success, all the photo albums.
-    #     """
-    #     queryset = self.get_queryset()
-    #     serializer = self.serializer_class(queryset, many=True)
-    #     return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         """POST Method for Photo Album.
