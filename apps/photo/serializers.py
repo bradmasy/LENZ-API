@@ -6,9 +6,38 @@ from django.db import transaction
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    photo = serializers.ImageField()
+    description = serializers.CharField()
+    active = serializers.BooleanField()
+    title = serializers.CharField()
+
     class Meta:
         model = Photo
-        fields = ("id", "description", "title", "photo", "created_at", "updated_at")
+        fields = (
+            "id",
+            "user_id",
+            "description",
+            "title",
+            "photo",
+            "active",
+            "created_at",
+            "updated_at",
+        )
+
+    def create(self, validated_data):
+        image_bytes = validated_data["photo"].read()
+        photo = Photo.objects.create(
+            user_id=validated_data[
+                "user_id"
+            ],  # User.objects.get(id=validated_data["user_id"]),
+            photo=image_bytes,
+            description=validated_data["description"],
+            active=validated_data["active"],
+            title=validated_data["title"],
+        )
+
+        return photo
 
 
 class PhotoUploadSerializer(serializers.ModelSerializer):

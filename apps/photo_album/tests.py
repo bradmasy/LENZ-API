@@ -37,7 +37,7 @@ class PhotoAlbumTests(TestCase):
         """Test creating a new photo album"""
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
@@ -48,13 +48,13 @@ class PhotoAlbumTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data.get("title"), "testtitle")
+        self.assertEqual(response.data.get("photo_album").get("title"), "testtitle")
 
     def test_get_photo_album(self):
         """Test getting a photo album"""
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
@@ -64,8 +64,24 @@ class PhotoAlbumTests(TestCase):
             format="json",
         )
 
-        response = self.client.get(reverse("photo-album-list"))
-        print(response.data)
+        response = self.client.get(reverse("photo-album"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data.get("results")), 1)
-        self.assertEqual(response.data.get("results")[0].get("title"), "testtitle")
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0].get("title"), "testtitle")
+
+
+# def test_update_photo(self):
+#     "Test updating a photo"
+
+#     response = self.client.post(
+#         reverse("photo-album"),
+#         {
+#             "user_id": self.user_id,
+#             "title": "testtitle",
+#             "description": "testdescription",
+#             "active": True,
+#         },
+#         format="json",
+#     )
+
+#     id = response.data.get("resul")

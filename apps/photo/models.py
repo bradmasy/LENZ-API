@@ -1,8 +1,6 @@
 from django.db import models
 from django.db.models.query import QuerySet
 
-# Create your models here.
-
 
 class PhotoQuerySet(QuerySet):
     def if_active(self):
@@ -10,6 +8,9 @@ class PhotoQuerySet(QuerySet):
 
     def by_id(self, id):
         return self.filter(id=id)
+
+    def get_photo_count(self):
+        return self.all().count()
 
 
 class PhotoManager(models.Manager):
