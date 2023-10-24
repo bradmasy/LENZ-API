@@ -1,12 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from apps.photo_album.models import PhotoAlbum
-from apps.journey.models import PhotoAlbumJourney
-from apps.photo_album.serializers import (
-    PhotoAlbumSerializer,
-    PhotoAlbumCreateSerializer,
-    PhotoAlbumEditSerializer,
-)
+from apps.photo_album.serializers import PhotoAlbumSerializer
 from rest_framework.response import Response
 from django.db import transaction
 from rest_framework import status
