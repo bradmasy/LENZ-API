@@ -1,5 +1,6 @@
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
+from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
 
 
 class CustomLimitOffsetPagination(LimitOffsetPagination):
@@ -10,7 +11,10 @@ class CustomLimitOffsetPagination(LimitOffsetPagination):
     count = 0
 
     def get_paginated_response(self, data):
-        self.count = len(data)
+        if isinstance(data, ReturnDict):
+            self.count = len([data])
+        if isinstance(data, ReturnList):
+            self.count = len(data)
         return Response(
             {
                 "count": self.count,

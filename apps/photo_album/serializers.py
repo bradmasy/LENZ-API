@@ -10,7 +10,7 @@ from django.db import transaction
 class PhotoAlbumSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=False)
-    photos = PhotoSerializer(many=True, read_only=True)
+    photos = PhotoAlbumPhotoSerializer(many=True, read_only=True)
     user_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=True
     )
@@ -29,13 +29,9 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
         )
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        photos = PhotoAlbumPhoto.objects.filter(photo_album_id=instance.id)
-        photo_serializer = PhotoAlbumPhotoSerializer(photos, many=True)
-        representation[
-            "photos"
-        ] = photo_serializer.data  # Update the 'photos' key in the representation
-        return representation
+        photo_album_photos = PhotoAlbumPhoto.objects.get_by_album_id(id=instance.id)
+        instance.photos = photo_album_photos
+        return super().to_representation(instance)
 
     def validate(self, attrs):
         return super().validate(attrs)

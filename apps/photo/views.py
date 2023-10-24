@@ -2,7 +2,7 @@ from rest_framework import generics
 from apps.photo.serializers import PhotoSerializer
 from rest_framework.permissions import IsAuthenticated
 from apps.photo.models import Photo, PhotoAlbumPhoto
-from apps.photo.serializers import PhotoUploadSerializer, PhotoAlbumPhotoSerializer
+from apps.photo.serializers import PhotoAlbumPhotoSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -18,17 +18,28 @@ class PhotoView(generics.GenericAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
+        id = kwargs.get("id", None)
+
+        if id != None:
+            print("works")
+            queryset = Photo.objects.get(id=id)
+            serializer = self.serializer_class(queryset, many=False)
+        else:
+            queryset = self.get_queryset()
+            serializer = self.serializer_class(queryset, many=True)
         return self.pagination_class().get_paginated_response(serializer.data)
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        try:
+            response = self.list(request, *args, **kwargs)
+        except Exception as e:
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return response
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-
         try:
+            serializer = self.serializer_class(data=request.data)
+
             with transaction.atomic():
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
@@ -88,23 +99,6 @@ class PhotoView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK,
         )
-
-
-class PhotoUpload(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = (MultiPartParser,)
-    serializer_class = PhotoUploadSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = PhotoUploadSerializer(data=request.data)
-
-        try:
-            if serializer.is_valid(raise_exception=True):
-                photo = serializer.save()
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(PhotoSerializer(photo).data, status=status.HTTP_201_CREATED)
 
 
 class PhotoViewByID(generics.ListAPIView):
