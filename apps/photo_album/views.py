@@ -18,7 +18,7 @@ class PhotoAlbumsView(generics.GenericAPIView):
     def list(self, request, *args, **kwargs):
         id = kwargs.get("pk", None)
 
-        if id != None:
+        if id is not None:
             queryset = PhotoAlbum.objects.get(id=id)
             serializer = self.serializer_class(queryset, many=False)
         else:
