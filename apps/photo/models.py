@@ -19,6 +19,9 @@ class PhotoQuerySet(QuerySet):
     def by_tag(self, tags):
         return self.filter(tags in tags)
 
+    def get_photo_count(self):
+        return self.all().count()
+
 
 class PhotoManager(models.Manager):
     def get_queryset(self) -> QuerySet:

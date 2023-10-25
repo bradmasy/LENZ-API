@@ -5,24 +5,36 @@ from apps.user.models import User
 from django.db import transaction
 
 
-class PhotoSerializer(serializers.ModelSerializer):
+class BasicPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
         fields = ("id", "description", "title", "photo", "created_at", "updated_at")
 
 
-class PhotoUploadSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+class PhotoSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     photo = serializers.ImageField()
     description = serializers.CharField()
     active = serializers.BooleanField()
     title = serializers.CharField()
 
+    class Meta:
+        model = Photo
+        fields = (
+            "id",
+            "user_id",
+            "description",
+            "title",
+            "photo",
+            "active",
+            "created_at",
+            "updated_at",
+        )
+
     def create(self, validated_data):
-        validated_data["user_id"] = User.objects.get(id=validated_data["user_id"]).id
         image_bytes = validated_data["photo"].read()
         photo = Photo.objects.create(
-            user_id=User.objects.get(id=validated_data["user_id"]),
+            user_id=validated_data["user_id"],
             photo=image_bytes,
             description=validated_data["description"],
             active=validated_data["active"],
@@ -30,42 +42,6 @@ class PhotoUploadSerializer(serializers.ModelSerializer):
         )
 
         return photo
-
-    def validate(self, attrs, raise_exception=False):
-        # add validations
-        return attrs
-
-    class Meta:
-        model = Photo
-        fields = (
-            "id",
-            "user_id",
-            "title",
-            "description",
-            "active",
-            "photo",
-            "created_at",
-            "updated_at",
-        )
-
-
-class PhotoAlbumPhotoEmbeddedSerializer(serializers.ModelSerializer):
-    photo_album_id = serializers.PrimaryKeyRelatedField(
-        queryset=PhotoAlbum.objects.all(), required=True
-    )
-
-    photo = PhotoSerializer(read_only=True)
-
-    def to_representation(self, instance):
-        photo = Photo.objects.get(id=instance.photo_id.id)
-        instance.photo = photo
-
-        return super().to_representation(instance)
-
-    class Meta:
-        model = PhotoAlbumPhoto
-        fields = ("id", "photo_album_id", "photo")
-        unique_together = ("photo_album_id", "photo_id")
 
 
 class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
@@ -76,7 +52,7 @@ class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
         queryset=PhotoAlbum.objects.all(), required=True
     )
 
-    photo = PhotoSerializer(read_only=True)
+    photo = BasicPhotoSerializer(read_only=True)
 
     def to_representation(self, instance):
         photo = Photo.objects.get(id=instance.photo_id.id)

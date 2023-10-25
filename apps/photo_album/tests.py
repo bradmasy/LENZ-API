@@ -37,7 +37,7 @@ class PhotoAlbumTests(TestCase):
         """Test creating a new photo album"""
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
@@ -48,13 +48,33 @@ class PhotoAlbumTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data.get("title"), "testtitle")
+        self.assertEqual(response.data.get("photo_album").get("title"), "testtitle")
 
     def test_get_photo_album(self):
         """Test getting a photo album"""
 
         response = self.client.post(
-            reverse("photo-album-create"),
+            reverse("photo-album"),
+            {
+                "user_id": self.user_id,
+                "title": "testtitle",
+                "description": "testdescription",
+                "active": True,
+            },
+            format="json",
+        )
+        id = response.data.get("photo_album").get("id")
+        response = self.client.get(reverse("photo-album-pk", args=[id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len([response.data.get("results")]), 1)
+        self.assertEqual(response.data.get("results").get("title"), "testtitle")
+
+    def test_update_photo(self):
+        "Test updating a photo"
+
+        response = self.client.post(
+            reverse("photo-album"),
             {
                 "user_id": self.user_id,
                 "title": "testtitle",
@@ -64,8 +84,16 @@ class PhotoAlbumTests(TestCase):
             format="json",
         )
 
-        response = self.client.get(reverse("photo-album-list"))
-        print(response.data)
+        id = response.data.get("photo_album").get("id")
+
+        new_data = {"title": "edit test"}
+
+        response = self.client.patch(
+            reverse("photo-album-pk", args=[id]), data=new_data, format="json"
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data.get("results")), 1)
-        self.assertEqual(response.data.get("results")[0].get("title"), "testtitle")
+
+        response = self.client.get(reverse("photo-album-pk", args=[id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("results").get("title"), "edit test")
