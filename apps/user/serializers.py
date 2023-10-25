@@ -14,17 +14,20 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "username", "email", "first_name", "last_name"]
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict):
         # not adding any particular checking right now, the serializer will throw an error
         # if the above fields are not provided in the post request to /users
         return super().create(validated_data)
+
+    def delete(self, instance: User):
+        instance.delete()
 
 
 class UserAuthenticationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict):
         """Validates the incoming login data/request.
 
         Args:
