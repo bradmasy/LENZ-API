@@ -46,6 +46,7 @@ class PhotoSerializer(serializers.ModelSerializer):
     def delete(self, instance):
         instance.delete()
 
+
 class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
     photo_id = serializers.PrimaryKeyRelatedField(
         queryset=Photo.objects.all(), required=True
