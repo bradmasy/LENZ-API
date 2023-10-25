@@ -21,7 +21,7 @@ class PhotoView(generics.GenericAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def list(self, request, *args, **kwargs):
-        id = kwargs.get("id", None)
+        id = kwargs.get("pk", None)
 
         if id is not None:
             print("works")
