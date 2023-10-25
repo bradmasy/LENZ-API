@@ -48,7 +48,7 @@ class Photo(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
     photo = models.BinaryField(blank=False, null=False)
-    tags = models.ManyToManyField(Tag, null=True)
+    tags = models.ManyToManyField(Tag)
     description = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
