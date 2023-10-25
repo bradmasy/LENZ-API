@@ -24,7 +24,6 @@ class PhotoView(generics.GenericAPIView):
         id = kwargs.get("pk", None)
 
         if id is not None:
-            print("works")
             queryset = Photo.objects.get(id=id)
             serializer = BasicPhotoSerializer(
                 queryset, many=False
