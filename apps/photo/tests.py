@@ -85,6 +85,42 @@ class PhotoTests(TestCase):
             response.data.get("results")[0].get("description"), "test description"
         )
 
+    def test_delete_photo(self):
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.jpg", img_file.read(), content_type="image/jpg"
+            )
+
+        response = self.client.post(
+            reverse("photo"),
+            {
+                "user_id": self.user_id,
+                "title": "my title",
+                "photo": photo_file,
+                "description": "test description",
+                "active": True,
+            },
+            format="multipart",
+        )
+
+        id = response.data.get("photo").get("id")
+        response = self.client.delete(reverse("photo-by-id", args=[id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.data.get("message"), "Photo Album Successfully Deleted"
+        )
+
+        response = self.client.get(reverse("photo"))
+
+        self.assertEqual(len(response.data.get("results")), 0)
+
+        response = self.client.get(reverse("photo-by-id", args=[id]))
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.data.get("error"), "Photo matching query does not exist."
+        )
+
 
 # Photo Album Photo Tests
 
