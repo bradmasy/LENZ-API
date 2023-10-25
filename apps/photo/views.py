@@ -1,7 +1,11 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from apps.photo.models import Photo, PhotoAlbumPhoto
-from apps.photo.serializers import PhotoAlbumPhotoSerializer, PhotoSerializer, BasicPhotoSerializer
+from apps.photo.serializers import (
+    PhotoAlbumPhotoSerializer,
+    PhotoSerializer,
+    BasicPhotoSerializer,
+)
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -22,10 +26,14 @@ class PhotoView(generics.GenericAPIView):
         if id is not None:
             print("works")
             queryset = Photo.objects.get(id=id)
-            serializer = BasicPhotoSerializer(queryset, many=False)#self.serializer_class(queryset, many=False)
+            serializer = BasicPhotoSerializer(
+                queryset, many=False
+            )  # self.serializer_class(queryset, many=False)
         else:
             queryset = self.get_queryset()
-            serializer = BasicPhotoSerializer(queryset, many=True)#self.serializer_class(queryset, many=False)
+            serializer = BasicPhotoSerializer(
+                queryset, many=True
+            )  # self.serializer_class(queryset, many=True)
         return self.pagination_class().get_paginated_response(serializer.data)
 
     def get(self, request, *args, **kwargs):
