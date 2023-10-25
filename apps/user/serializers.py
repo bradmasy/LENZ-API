@@ -63,14 +63,14 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         return super().validate(attrs)
-    
+
     def create(self, validated_data):
         # not adding any particular checking right now, the serializer will throw an error
         # if the above fields are not provided in the post request to /users
         if validated_data.get("is_superuser", False) == False:
             User = User.objects.create_user(**validated_data)
-            
+
         else:
             pass
-            
+
         return super().create(validated_data)
