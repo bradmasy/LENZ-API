@@ -2,7 +2,6 @@ from rest_framework import serializers
 from apps.photo_album.models import PhotoAlbum
 from apps.photo.serializers import PhotoSerializer, PhotoAlbumPhotoSerializer
 from apps.photo.models import PhotoAlbumPhoto
-from apps.journey.models import PhotoAlbumJourney
 from apps.user.models import User
 from django.db import transaction
 
@@ -36,14 +35,7 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
     def validate(self, attrs: dict) -> dict:
         return super().validate(attrs)
 
-    def delete_related_objects(self, instance: PhotoAlbum):
-        photo_album_journeys = PhotoAlbumJourney.objects.filter(
-            photo_album_id=instance.id
-        )
-        photo_album_journeys.delete()
-
     def delete(self, instance: PhotoAlbum):
-        self.delete_related_objects(instance)
         instance.delete()
 
     def create(self, validated_data: dict) -> PhotoAlbum:

@@ -61,8 +61,7 @@ INSTALLED_APPS = [
     # Apps/Models
     "apps.user",
     "apps.photo",
-    "apps.photo_album",
-    "apps.journey",
+    "apps.photo_album"
 ]
 
 MIDDLEWARE = [
