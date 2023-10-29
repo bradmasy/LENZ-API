@@ -4,7 +4,6 @@ from django.db.models.query import QuerySet
 
 # Create your models here.
 class Tag(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=40, unique=True, blank=False, null=False)
 
     def __str__(self):
