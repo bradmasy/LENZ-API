@@ -1,5 +1,8 @@
 from django.db import models
 from django.db.models.query import QuerySet
+import datetime
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 
 class PhotoQuerySet(QuerySet):
@@ -11,6 +14,16 @@ class PhotoQuerySet(QuerySet):
 
     def get_photo_count(self):
         return self.all().count()
+
+    def search_queryset(self, query: dict):
+        from_date = query.get("from_date")
+        to_date = query.get("to_date")
+
+        return (
+            self.filter(title__iregex=f"{query.get('title')}")
+            .filter(description__iregex=f"{query.get('description')}")
+            .filter(created_at__range=(from_date, to_date))
+        )
 
 
 class PhotoManager(models.Manager):
@@ -25,6 +38,9 @@ class PhotoManager(models.Manager):
 
     def by_id(self, id):
         return self.get_queryset().by_id(id)
+
+    def by_search_query(self, query):
+        return self.get_queryset().search_queryset(query)
 
 
 class Photo(models.Model):

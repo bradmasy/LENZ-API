@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db import transaction
 from libs.custom_limit_offset_pagination import CustomLimitOffsetPagination
+import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class PhotoView(generics.GenericAPIView):
@@ -20,19 +22,36 @@ class PhotoView(generics.GenericAPIView):
     pagination_class = CustomLimitOffsetPagination
     parser_classes = (MultiPartParser, FormParser)
 
+    def regex_query_params(self, params):
+        pass
+
     def list(self, request, *args, **kwargs):
         id = kwargs.get("pk", None)
 
-        if id is not None:
-            queryset = Photo.objects.get(id=id)
-            serializer = BasicPhotoSerializer(
-                queryset, many=False
-            )  # self.serializer_class(queryset, many=False)
+        query_params = request.query_params
+
+        if query_params:
+            queries = {
+                "title": query_params.get("title", ".*"),
+                "description": query_params.get("description", ".*"),
+                "from_date": query_params.get(
+                    "from_date",
+                    (datetime.datetime.now() - relativedelta(years=5)).date(),
+                ),
+                "to_date": query_params.get("to_date", datetime.datetime.now().date()),
+            }
+
+            queryset = Photo.objects.by_search_query(queries)
+            serializer = BasicPhotoSerializer(queryset, many=True)
+
         else:
-            queryset = self.get_queryset()
-            serializer = BasicPhotoSerializer(
-                queryset, many=True
-            )  # self.serializer_class(queryset, many=True)
+            # Signifies querying a specific photo: "/photo/123" etc
+            if id is not None:
+                queryset = Photo.objects.get(id=id)
+                serializer = BasicPhotoSerializer(queryset, many=False)
+            else:
+                queryset = self.get_queryset()
+                serializer = BasicPhotoSerializer(queryset, many=True)
         return self.pagination_class().get_paginated_response(serializer.data)
 
     def get(self, request, *args, **kwargs):
