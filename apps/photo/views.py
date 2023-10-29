@@ -12,7 +12,6 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db import transaction
 from libs.custom_limit_offset_pagination import CustomLimitOffsetPagination
-from dateutil.relativedelta import relativedelta
 
 
 class PhotoView(generics.GenericAPIView):
@@ -36,7 +35,7 @@ class PhotoView(generics.GenericAPIView):
                 "description": query_params.get("description", ".*"),
                 "from_date": query_params.get(
                     "from_date",
-                    (datetime.datetime.now() - relativedelta(years=5)).date(),
+                    (datetime.datetime.now() - datetime.timedelta(days=35 * 365)),
                 ),
                 "to_date": query_params.get("to_date", datetime.datetime.now().date()),
                 "tags": query_params.get("tags", []),
