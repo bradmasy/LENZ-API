@@ -2,7 +2,6 @@ from rest_framework import serializers
 from apps.photo_album.models import PhotoAlbum
 from apps.photo.serializers import PhotoSerializer, PhotoAlbumPhotoSerializer
 from apps.photo.models import PhotoAlbumPhoto
-from apps.journey.models import PhotoAlbumJourney
 from apps.user.models import User
 from django.db import transaction
 
@@ -28,25 +27,18 @@ class PhotoAlbumSerializer(serializers.ModelSerializer):
             "active",
         )
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: PhotoAlbum) -> PhotoAlbum:
         photo_album_photos = PhotoAlbumPhoto.objects.get_by_album_id(id=instance.id)
         instance.photos = photo_album_photos
         return super().to_representation(instance)
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
         return super().validate(attrs)
 
-    def delete_related_objects(self, instance):
-        photo_album_journeys = PhotoAlbumJourney.objects.filter(
-            photo_album_id=instance.id
-        )
-        photo_album_journeys.delete()
-
-    def delete(self, instance):
-        self.delete_related_objects(instance)
+    def delete(self, instance: PhotoAlbum):
         instance.delete()
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> PhotoAlbum:
         with transaction.atomic():
             photo_album = PhotoAlbum.objects.create(
                 user_id=validated_data["user_id"],
@@ -66,14 +58,14 @@ class PhotoAlbumCreateSerializer(serializers.ModelSerializer):
     description = serializers.CharField(required=True)
     photos = PhotoSerializer(many=True, read_only=True)
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
         if not attrs["user_id"]:
             raise serializers.ValidationError("User id is required")
         elif not attrs["title"]:
             raise serializers.ValidationError("Title is required")
         return attrs
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> PhotoAlbum:
         with transaction.atomic():
             photo_album = PhotoAlbum.objects.create(
                 user_id=validated_data["user_id"],

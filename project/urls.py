@@ -27,5 +27,4 @@ urlpatterns = [
     path("", include("apps.user.urls")),
     path("", include("apps.photo.urls")),
     path("", include("apps.photo_album.urls")),
-    path("", include("apps.journey.urls")),
 ] + router.urls
