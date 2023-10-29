@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from apps.photo.models import Photo, PhotoAlbumPhoto
@@ -11,7 +12,6 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db import transaction
 from libs.custom_limit_offset_pagination import CustomLimitOffsetPagination
-import datetime
 from dateutil.relativedelta import relativedelta
 
 
@@ -39,6 +39,7 @@ class PhotoView(generics.GenericAPIView):
                     (datetime.datetime.now() - relativedelta(years=5)).date(),
                 ),
                 "to_date": query_params.get("to_date", datetime.datetime.now().date()),
+                "tags": query_params.get("tags", []),
             }
 
             queryset = Photo.objects.by_search_query(queries)
