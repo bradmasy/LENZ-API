@@ -31,6 +31,10 @@ class PhotoSerializer(serializers.ModelSerializer):
             "updated_at",
         )
 
+    def to_representation(self, instance):
+        serialized = BasicPhotoSerializer(instance).data
+        return serialized
+
     def create(self, validated_data):
         image_bytes = validated_data["photo"].read()
         photo = Photo.objects.create(
@@ -45,6 +49,12 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     def delete(self, instance):
         instance.delete()
+
+    def update(self, instance, validated_data):
+        if validated_data.get("photo", None) is not None:
+            validated_data["photo"] = validated_data["photo"].read()
+
+        return super().update(instance, validated_data)
 
 
 class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):

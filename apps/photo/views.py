@@ -58,9 +58,12 @@ class PhotoView(generics.GenericAPIView):
         return Response(response_data, status=status.HTTP_201_CREATED)
 
     def put(self, request, *args, **kwargs):
+        print("in put...")
         try:
             with transaction.atomic():
+                
                 instance = self.get_object()
+                print(instance)
                 serializer = self.get_serializer(instance, data=request.data)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
@@ -85,7 +88,7 @@ class PhotoView(generics.GenericAPIView):
         return Response(
             {
                 "message": "Successfully Updated Photo",
-                "photo_album": serializer.data,
+                "photo": serializer.data,
             },
             status=status.HTTP_200_OK,
         )
