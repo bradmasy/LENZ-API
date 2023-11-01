@@ -31,8 +31,46 @@ class PhotoSerializer(serializers.ModelSerializer):
             "updated_at",
         )
 
+    def validate(self, attrs):
+        print("in validate")
+
+        print(attrs)
+        id = attrs.get("id",None)
+        print(id)
+        photo = attrs.get("photo", None)
+        user_id = attrs.get("user_id", None)
+        description = attrs.get("description", "")
+        active = attrs.get("active", True)
+        title = attrs.get("title", None)
+        # if no photo is sent through then we know
+        if not photo or not user_id or not title:
+            raise Exception("Photo, User ID, and Title must be in request.")
+
+        
+            
+        validated_dict = {
+            "photo": photo,
+            "user_id": user_id,
+            "description": description,
+            "active": active,
+            "title": title,
+        }
+        if id:
+            print("here")
+            validated_dict["id"] = id
+
+        return super().validate(validated_dict)
+
+    def to_representation(self, instance):
+        serialized = BasicPhotoSerializer(instance).data
+        return serialized
+
     def create(self, validated_data):
+        print("in create")
+        print(validated_data)
         image_bytes = validated_data["photo"].read()
+        
+        
         photo = Photo.objects.create(
             user_id=validated_data["user_id"],
             photo=image_bytes,
@@ -45,6 +83,12 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     def delete(self, instance):
         instance.delete()
+
+    def update(self, instance, validated_data):
+        if validated_data.get("photo", None) is not None:
+            validated_data["photo"] = validated_data["photo"].read()
+
+        return super().update(instance, validated_data)
 
 
 class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
