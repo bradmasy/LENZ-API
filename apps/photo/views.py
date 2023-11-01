@@ -76,20 +76,6 @@ class PhotoView(generics.GenericAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
-    def put(self, request, *args, **kwargs):
-        try:
-            with transaction.atomic():
-                instance = self.get_object()
-                serializer = self.get_serializer(instance, data=request.data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-        except Exception as e:
-            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(
-            {"message": "PUT Request Successful", "photo": serializer.data},
-            status=status.HTTP_200_OK,
-        )
-
     def patch(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
@@ -104,7 +90,7 @@ class PhotoView(generics.GenericAPIView):
         return Response(
             {
                 "message": "Successfully Updated Photo",
-                "photo_album": serializer.data,
+                "photo": serializer.data,
             },
             status=status.HTTP_200_OK,
         )
