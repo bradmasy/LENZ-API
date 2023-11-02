@@ -18,7 +18,7 @@ import sys
 
 # Environment Variables for project
 
-ENV = "DEV"  # os.environ.get("ENV", "DEV")
+ENV = "PROD"  # os.environ.get("ENV", "DEV")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
