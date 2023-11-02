@@ -32,7 +32,6 @@ class PhotoSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-
         id = attrs.get("id", None)
         photo = attrs.get("photo", None)
         user_id = attrs.get("user_id", None)
@@ -51,7 +50,7 @@ class PhotoSerializer(serializers.ModelSerializer):
                 "active": active,
                 "title": title,
             }
-            if photo != None
+            if photo is not None
             else {
                 "user_id": user_id,
                 "description": description,
