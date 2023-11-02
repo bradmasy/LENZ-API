@@ -1,18 +1,18 @@
 import datetime
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from apps.photo.models import Photo, PhotoAlbumPhoto
+from apps.photo.models import Photo, PhotoAlbumPhoto,Tag
 from apps.photo.serializers import (
     PhotoAlbumPhotoSerializer,
     PhotoSerializer,
     BasicPhotoSerializer,
+    TagSerializer
 )
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db import transaction
 from libs.custom_limit_offset_pagination import CustomLimitOffsetPagination
-from dateutil.relativedelta import relativedelta
 
 
 class PhotoView(generics.GenericAPIView):
@@ -36,12 +36,12 @@ class PhotoView(generics.GenericAPIView):
                 "description": query_params.get("description", ".*"),
                 "from_date": query_params.get(
                     "from_date",
-                    (datetime.datetime.now() - relativedelta(years=5)).date(),
+                    (datetime.datetime.now() - datetime.timedelta(days=5 * 365)).date(),
                 ),
                 "to_date": query_params.get("to_date", datetime.datetime.now().date()),
                 "tags": query_params.get("tags", []),
             }
-
+            print(queries)
             queryset = Photo.objects.by_search_query(queries)
             serializer = BasicPhotoSerializer(queryset, many=True)
 
@@ -85,6 +85,7 @@ class PhotoView(generics.GenericAPIView):
                     instance, data=request.data, partial=True
                 )
                 serializer.is_valid(raise_exception=True)
+                print("after...")
                 serializer.save()
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -225,3 +226,18 @@ class PhotoAlbumPhotosView(generics.ListAPIView):
     def get_queryset(self):
         queryset = PhotoAlbumPhoto.objects.all()
         return queryset
+
+
+class TagView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+    
+    def get(self, request, *args, **kwargs):
+        pass
+    def post(self, request, *args, **kwargs):
+        pass
+    def patch(self, request, *args, **kwargs):
+        pass
+    def delete(self, request, *args, **kwargs):
+        pass

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.photo.models import Photo, PhotoAlbumPhoto
+from apps.photo.models import Photo, PhotoAlbumPhoto, Tag
 from apps.photo_album.models import PhotoAlbum
 from apps.user.models import User
 from django.db import transaction
@@ -40,17 +40,27 @@ class PhotoSerializer(serializers.ModelSerializer):
         description = attrs.get("description", "")
         active = attrs.get("active", True)
         title = attrs.get("title", None)
-        # if no photo is sent through then we know
-        if not photo or not user_id or not title:
-            raise Exception("Photo, User ID, and Title must be in request.")
 
-        validated_dict = {
-            "photo": photo,
-            "user_id": user_id,
-            "description": description,
-            "active": active,
-            "title": title,
-        }
+        if not user_id or not title:
+            raise Exception("User ID, and Title must be in request.")
+
+        validated_dict = (
+            {
+                "photo": photo,
+                "user_id": user_id,
+                "description": description,
+                "active": active,
+                "title": title,
+            }
+            if photo != None
+            else {
+                "user_id": user_id,
+                "description": description,
+                "active": active,
+                "title": title,
+            }
+        )
+
         if id:
             validated_dict["id"] = id
 
@@ -77,6 +87,7 @@ class PhotoSerializer(serializers.ModelSerializer):
         instance.delete()
 
     def update(self, instance, validated_data):
+        print("here")
         if validated_data.get("photo", None) is not None:
             validated_data["photo"] = validated_data["photo"].read()
 
@@ -116,3 +127,10 @@ class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
         model = PhotoAlbumPhoto
         fields = ("id", "photo_id", "photo_album_id", "photo")
         unique_together = ("photo_album_id", "photo_id")
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ("id", "name")
+        unique = "name"
