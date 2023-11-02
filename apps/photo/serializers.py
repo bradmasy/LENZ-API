@@ -32,7 +32,6 @@ class PhotoSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        print("in validate")
 
         id = attrs.get("id", None)
         photo = attrs.get("photo", None)
@@ -87,7 +86,6 @@ class PhotoSerializer(serializers.ModelSerializer):
         instance.delete()
 
     def update(self, instance, validated_data):
-        print("here")
         if validated_data.get("photo", None) is not None:
             validated_data["photo"] = validated_data["photo"].read()
 
