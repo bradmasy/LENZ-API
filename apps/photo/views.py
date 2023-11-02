@@ -1,11 +1,12 @@
 import datetime
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from apps.photo.models import Photo, PhotoAlbumPhoto
+from apps.photo.models import Photo, PhotoAlbumPhoto, Tag
 from apps.photo.serializers import (
     PhotoAlbumPhotoSerializer,
     PhotoSerializer,
     BasicPhotoSerializer,
+    TagSerializer,
 )
 from rest_framework import status
 from rest_framework.response import Response
@@ -35,12 +36,12 @@ class PhotoView(generics.GenericAPIView):
                 "description": query_params.get("description", ".*"),
                 "from_date": query_params.get(
                     "from_date",
-                    (datetime.datetime.now() - datetime.timedelta(days=35 * 365)),
+                    (datetime.datetime.now() - datetime.timedelta(days=5 * 365)).date(),
                 ),
                 "to_date": query_params.get("to_date", datetime.datetime.now().date()),
                 "tags": query_params.get("tags", []),
             }
-
+            print(queries)
             queryset = Photo.objects.by_search_query(queries)
             serializer = BasicPhotoSerializer(queryset, many=True)
 
@@ -224,3 +225,21 @@ class PhotoAlbumPhotosView(generics.ListAPIView):
     def get_queryset(self):
         queryset = PhotoAlbumPhoto.objects.all()
         return queryset
+
+
+class TagView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+    def patch(self, request, *args, **kwargs):
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        pass

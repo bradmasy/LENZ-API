@@ -18,19 +18,26 @@ class PhotoQuerySet(QuerySet):
         return self.filter(id=id)
 
     def by_tag(self, tags):
-        return self.filter(tags in tags)
+        return self.filter(tags__name__in=tags)
 
     def get_photo_count(self):
         return self.all().count()
 
-    def search_queryset(self, query: dict):
-        from_date = query.get("from_date")
-        to_date = query.get("to_date")
+    def by_title(self, title):
+        return self.filter(title__iregex=title)
 
+    def by_description(self, description):
+        return self.filter(description__iregex=description)
+
+    def by_date_range(self, from_date, to_date):
+        return self.filter(created_at__range=(from_date, to_date))
+
+    def search_queryset(self, query: dict):
         return (
-            self.filter(title__iregex=f"{query.get('title')}")
-            .filter(description__iregex=f"{query.get('description')}")
-            .filter(created_at__range=(from_date, to_date))
+            self.by_title(query.get("title"))
+            .by_description(query.get("description"))
+            .by_date_range(query.get("from_date"), query.get("to_date"))
+            .by_tag(query.get("tags"))
         )
 
 
