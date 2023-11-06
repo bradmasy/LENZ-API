@@ -22,9 +22,6 @@ class PhotoView(generics.GenericAPIView):
     pagination_class = CustomLimitOffsetPagination
     parser_classes = (MultiPartParser, FormParser)
 
-    def regex_query_params(self, params):
-        pass
-
     def list(self, request, *args, **kwargs):
         id = kwargs.get("pk", None)
 
@@ -131,12 +128,36 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
     # parser_classes = (MultiPartParser, FormParser)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
+        id = kwargs.get("pk", None)
+        query_params = request.query_params
+
+        if query_params:
+            queries = {
+                "photo_album_id": query_params.get("photo_album_id", None),
+                "photo_id": query_params.get("photo_id", None),
+                "from_date": query_params.get(
+                    "from_date",
+                    (datetime.datetime.now() - datetime.timedelta(days=5 * 365)).date(),
+                ),
+                "to_date": query_params.get("to_date", datetime.datetime.now().date()),
+            }
+            queryset = PhotoAlbumPhoto.objects.by_search_queryset(queries)
+        else:
+            if id is not None:
+                queryset = PhotoAlbumPhoto.objects.get(id=id)
+                serializer = self.serializer_class(queryset, many=False)
+            else:
+                queryset = self.get_queryset()
+                serializer = self.serializer_class(queryset, many=True)
+
         return self.pagination_class().get_paginated_response(serializer.data)
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        try:
+            response = self.list(request, *args, **kwargs)
+        except Exception as e:
+            return Response({"error", f"{e}"})
+        return response
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)

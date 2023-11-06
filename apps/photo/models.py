@@ -85,7 +85,26 @@ class PhotoAlbumPhotoQuerySet(QuerySet):
         return self.filter(photo_album_id=id)
 
     def by_id(self, id):
-        return self.filter(id=id)
+        return self.filter(id=id) if id is not None else self.all()
+
+    def by_photo_album_id(self, photo_album_id):
+        return self.filter(photo_album_id=photo_album_id)
+            
+
+    def by_photo_id(self, photo_id):
+        return self.filter(photo_id=photo_id)
+
+    def by_date_range(self, from_date, to_date):
+        return self.filter(created_at__range=(from_date, to_date))
+
+    def search_queryset(self, query: dict):
+        print(query)
+        return (
+            self
+            .by_photo_album_id(query.get("photo_album_id"))
+            .by_photo_id(query.get("photo_id"))
+            .by_date_range(query.get("from_date"), query.get("to_date"))
+        )
 
 
 class PhotoAlbumPhotoManager(models.Manager):
@@ -94,6 +113,9 @@ class PhotoAlbumPhotoManager(models.Manager):
 
     def get_by_album_id(self, id):
         return self.get_queryset().by_album_id(id)
+
+    def by_search_queryset(self, queryset: dict):
+        return self.get_queryset().search_queryset(queryset)
 
 
 class PhotoAlbumPhoto(models.Model):
