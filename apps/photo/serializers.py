@@ -8,7 +8,16 @@ from django.db import transaction
 class BasicPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ("id", "description", "title", "photo", "created_at", "updated_at")
+        fields = (
+            "id",
+            "description",
+            "title",
+            "latitude",
+            "longitude",
+            "photo",
+            "created_at",
+            "updated_at",
+        )
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -17,6 +26,8 @@ class PhotoSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     active = serializers.BooleanField()
     title = serializers.CharField()
+    latitude = serializers.DecimalField(max_digits=9, decimal_places=6)
+    longitude = serializers.DecimalField(max_digits=9, decimal_places=6)
 
     class Meta:
         model = Photo
@@ -27,6 +38,8 @@ class PhotoSerializer(serializers.ModelSerializer):
             "title",
             "photo",
             "active",
+            "longitude",
+            "latitude",
             "created_at",
             "updated_at",
         )
@@ -38,6 +51,10 @@ class PhotoSerializer(serializers.ModelSerializer):
         description = attrs.get("description", "")
         active = attrs.get("active", True)
         title = attrs.get("title", None)
+        latitude = attrs.get("latitude", None)
+        longitude = attrs.get("longitude", None)
+
+        print(f"validating... {attrs}")
 
         if not user_id or not title:
             raise Exception("User ID, and Title must be in request.")
@@ -49,13 +66,17 @@ class PhotoSerializer(serializers.ModelSerializer):
                 "description": description,
                 "active": active,
                 "title": title,
+                "latitude": latitude,
+                "longitude": longitude,
             }
-            if photo is not None
+            if photo is not None  # if there is a photo...
             else {
                 "user_id": user_id,
                 "description": description,
                 "active": active,
                 "title": title,
+                "latitude": latitude,
+                "longitude": longitude,
             }
         )
 
@@ -76,6 +97,8 @@ class PhotoSerializer(serializers.ModelSerializer):
             photo=image_bytes,
             description=validated_data["description"],
             active=validated_data["active"],
+            latitude=validated_data["latitude"],
+            longitude=validated_data["longitude"],
             title=validated_data["title"],
         )
 
@@ -85,10 +108,20 @@ class PhotoSerializer(serializers.ModelSerializer):
         instance.delete()
 
     def update(self, instance, validated_data):
-        if validated_data.get("photo", None) is not None:
-            validated_data["photo"] = validated_data["photo"].read()
+        current_instance_data = BasicPhotoSerializer(instance).data
+        attributes_list = list(current_instance_data.keys())
 
-        return super().update(instance, validated_data)
+        for key, value in validated_data.items():
+            if (
+                key in attributes_list and key != "photo"
+            ):  # photo needs to be handled separate.
+                setattr(instance, key, value)
+
+        if "photo" in validated_data:
+            instance.photo = validated_data["photo"].read()
+
+        instance.save()
+        return instance
 
 
 class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
