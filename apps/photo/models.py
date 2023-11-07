@@ -18,6 +18,8 @@ class PhotoQuerySet(QuerySet):
         return self.filter(id=id)
 
     def by_tag(self, tags):
+        if len(tags) == 0:
+            return self
         return self.filter(tags__name__in=tags)
 
     def get_photo_count(self):
@@ -30,6 +32,8 @@ class PhotoQuerySet(QuerySet):
         return self.filter(description__iregex=description)
 
     def by_date_range(self, from_date, to_date):
+        if from_date > to_date:
+            raise Exception("From date can not be greater than the end date specified.")
         return self.filter(created_at__range=(from_date, to_date))
 
     def search_queryset(self, query: dict):
