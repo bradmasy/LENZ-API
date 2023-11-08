@@ -18,7 +18,7 @@ import sys
 
 # Environment Variables for project
 
-ENV = "DEV"  # os.environ.get("ENV", "DEV")
+ENV = "PROD"  # os.environ.get("ENV", "DEV")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "https://lenz-5f9c8ee2c363.herokuapp.com/",
     "lenz-5f9c8ee2c363.herokuapp.com",
+    "*",
 ]
 
 
@@ -211,3 +212,14 @@ CSRF_TRUSTED_ORIGINS = [
 # CORS_ALLOW_CREDENTIALS = True
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_CREDENTIALS = True
+
+# CORS
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:9000",
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "http://127.0.0.1:8000/auth/token",
+    "*",
+]

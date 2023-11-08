@@ -8,6 +8,8 @@ def api_root(request):
     return Response(
         {
             "users": reverse("users", request=request),
-            #  "auth": reverse("auth", request=request),
+            "photos": reverse("photo", request=request),
+            "photo-album-photos": reverse("photo-album-photo", request=request),
+            "photo-albums": reverse("photo-album", request=request),
         }
     )

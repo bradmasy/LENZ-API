@@ -12,6 +12,7 @@ class UserManager(BaseUserManager):
             username=username,
             first_name=first_name,
             last_name=last_name,
+            is_superuser=False,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -51,7 +52,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name"] # when creating super users, this is what will be prompted on the CLI
+    REQUIRED_FIELDS = [
+        "username",
+        "first_name",
+        "last_name",
+    ]  # when creating super users, this is what will be prompted on the CLI
 
 
 class Blogger(User):
