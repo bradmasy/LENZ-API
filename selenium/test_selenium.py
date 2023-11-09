@@ -6,9 +6,6 @@ api_url = "https://lenz-5f9c8ee2c363.herokuapp.com/"
 
 
 class HostTest(LiveServerTestCase):
-    def setUpClass(cls):
-        cls.selenium.quit()
-        super().setUpClass()
 
     @classmethod
     def setUpClass(cls):
@@ -20,7 +17,7 @@ class HostTest(LiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        # cls.selenium.quit()
+        cls.selenium.quit()
         super().tearDownClass()
 
     def test_api_root(self):
