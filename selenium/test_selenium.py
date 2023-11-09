@@ -1,16 +1,20 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 api_url = "https://lenz-5f9c8ee2c363.herokuapp.com/"
 
 
 class HostTest(LiveServerTestCase):
-    # def setUpClass(cls):
-    #     super().setUpClass()
+    def setUpClass(cls):
+        cls.selenium.quit()
+        super().setUpClass()
 
     @classmethod
     def setUpClass(cls):
-        cls.selenium = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  # Run Chrome in headless mode
+        cls.selenium = webdriver.Chrome(options=chrome_options)
         cls.selenium.implicitly_wait(10)
         super().setUpClass()
 
