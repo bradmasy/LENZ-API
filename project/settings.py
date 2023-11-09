@@ -18,7 +18,7 @@ import sys
 
 # Environment Variables for project
 
-ENV = "DEV"  # os.environ.get("ENV", "DEV")
+ENV = "PROD"  # os.environ.get("ENV", "DEV")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     # Apps/Models
     "apps.user",
     "apps.photo",
-    "apps.photo_album"
+    "apps.photo_album",
 ]
 
 MIDDLEWARE = [

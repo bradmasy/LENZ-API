@@ -26,8 +26,8 @@ class PhotoSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     active = serializers.BooleanField()
     title = serializers.CharField()
-    latitude = serializers.DecimalField(max_digits=9, decimal_places=6)
-    longitude = serializers.DecimalField(max_digits=9, decimal_places=6)
+    latitude = serializers.DecimalField(max_digits=9, decimal_places=6, required=False)
+    longitude = serializers.DecimalField(max_digits=9, decimal_places=6, required=False)
 
     class Meta:
         model = Photo
