@@ -22,9 +22,6 @@ class PhotoView(generics.GenericAPIView):
     pagination_class = CustomLimitOffsetPagination
     parser_classes = (MultiPartParser, FormParser)
 
-    def regex_query_params(self, params):
-        pass
-
     def list(self, request, *args, **kwargs):
         id = kwargs.get("pk", None)
 
@@ -40,8 +37,9 @@ class PhotoView(generics.GenericAPIView):
                 ),
                 "to_date": query_params.get("to_date", datetime.datetime.now().date()),
                 "tags": query_params.get("tags", []),
+                "limit": query_params.get("limit", 25),
+                "offset": query_params.get("offset", 0),
             }
-            print(queries)
             queryset = Photo.objects.by_search_query(queries)
             serializer = BasicPhotoSerializer(queryset, many=True)
 
@@ -53,7 +51,10 @@ class PhotoView(generics.GenericAPIView):
             else:
                 queryset = self.get_queryset()
                 serializer = BasicPhotoSerializer(queryset, many=True)
-        return self.pagination_class().get_paginated_response(serializer.data)
+
+        return self.pagination_class().get_paginated_response(
+            Photo, request, serializer.data
+        )
 
     def get(self, request, *args, **kwargs):
         try:
