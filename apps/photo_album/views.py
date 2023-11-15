@@ -24,7 +24,9 @@ class PhotoAlbumsView(generics.GenericAPIView):
         else:
             queryset = self.get_queryset()
             serializer = self.serializer_class(queryset, many=True)
-        return self.pagination_class().get_paginated_response(serializer.data)
+        return self.pagination_class().get_paginated_response(
+            model=PhotoAlbum, request=request, data=serializer.data
+        )
 
     def get(self, request, *args, **kwargs):
         try:

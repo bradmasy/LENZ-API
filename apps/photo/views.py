@@ -139,7 +139,11 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
         )
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        try:
+            response = self.list(request, *args, **kwargs)
+        except Exception as e:
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return response
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
