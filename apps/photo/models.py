@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.query import QuerySet
-from datetime import timedelta, datetime
+from datetime import datetime
 
 
 # Create your models here.
@@ -48,7 +48,7 @@ class PhotoQuerySet(QuerySet):
             self.by_title(query.get("title"))
             .by_description(query.get("description"))
             .by_date_range(query.get("from_date"), query.get("to_date"))
-            .by_tag(query.get("tags"))[offset : offset + limit]
+            .by_tag(query.get("tags"))[offset: offset + limit]
         )
 
 
