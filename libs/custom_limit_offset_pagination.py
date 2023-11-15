@@ -1,6 +1,6 @@
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
+from rest_framework.utils.serializer_helpers import ReturnDict
 
 
 class CustomLimitOffsetPagination(LimitOffsetPagination):
@@ -12,9 +12,7 @@ class CustomLimitOffsetPagination(LimitOffsetPagination):
 
     def get_paginated_response(self, model, request, data):
         self.limit = int(request.query_params.get("limit", 10))
-        self.offset = int(
-            request.query_params.get("offset", 0)
-        )  
+        self.offset = int(request.query_params.get("offset", 0))
 
         self.count = len(model.objects.all())
         self.request = request
