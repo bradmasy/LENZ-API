@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from urllib.parse import urlencode
-from datetime import datetime
 
 
 class PhotoTests(TestCase):
