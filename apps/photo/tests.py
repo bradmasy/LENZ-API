@@ -3,6 +3,8 @@ from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from urllib.parse import urlencode
+from datetime import datetime
 
 
 class PhotoTests(TestCase):
@@ -120,6 +122,50 @@ class PhotoTests(TestCase):
         self.assertEqual(
             response.data.get("error"), "Photo matching query does not exist."
         )
+
+    def test_search_photos(self):
+        titles = ["my title", "this title", "daily photo", "random"]
+        descriptions = ["mountain", "sunny day", "fun", "great day"]
+
+        for i in range(0, len(titles)):
+            title = titles[i]
+
+            for j in range(0, len(descriptions)):
+                description = descriptions[j]
+
+                for k in range(0, 5):
+                    with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+                        photo_file = SimpleUploadedFile(
+                            "test.jpg", img_file.read(), content_type="image/jpg"
+                        )
+                    print("posting")
+                    self.client.post(
+                        reverse("photo"),
+                        {
+                            "user_id": self.user_id,
+                            "title": title,
+                            "photo": photo_file,
+                            "description": description,
+                            "active": True,
+                        },
+                        format="multipart",
+                    )
+
+        query = {"title": "my title"}
+
+        response = self.client.get(reverse("photo") + "?" + urlencode(query))
+        self.assertEqual(response.data.get("count"), 20)
+
+        query = {"title": "my title", "description": "mountain"}
+
+        response = self.client.get(reverse("photo") + "?" + urlencode(query))
+        self.assertEqual(response.data.get("count"), 5)
+
+        to_date_str = "2023-12-31"
+        from_date_str = "2023-09-01"
+        query = {"to_date": to_date_str, "from_date": from_date_str}
+        response = self.client.get(reverse("photo") + "?" + urlencode(query))
+        self.assertEqual(response.data.get("count"), 80)
 
 
 # Photo Album Photo Tests

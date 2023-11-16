@@ -11,10 +11,17 @@ class CustomLimitOffsetPagination(LimitOffsetPagination):
     count = 0
 
     def get_paginated_response(self, model, request, data):
-        self.limit = int(request.query_params.get("limit", 10))
+        request_queries = request.query_params
+        queries = ["title", "photo", "description", "active"]
+        self.limit = int(request.query_params.get("limit", 25))
         self.offset = int(request.query_params.get("offset", 0))
 
-        self.count = len(model.objects.all())
+        for i in queries:
+            if i in request_queries.keys():
+                self.count = len(data)
+                break
+            else:
+                self.count = len(model.objects.all())
         self.request = request
         if isinstance(data, ReturnDict):  # if its a single entity
             self.count = len([data])

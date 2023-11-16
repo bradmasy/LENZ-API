@@ -35,9 +35,16 @@ class PhotoQuerySet(QuerySet):
     def by_date_range(self, from_date, to_date):
         if from_date > to_date:
             raise Exception("From date can not be greater than the end date specified.")
-        to_date = datetime.strptime(to_date, "%Y-%m-%d").replace(
-            hour=23, minute=59, second=59
-        )
+
+        if isinstance(to_date, str):
+            to_date = datetime.strptime(to_date, "%Y-%m-%d").replace(
+                hour=23, minute=59, second=59
+            )
+        else:
+            to_date = to_date.strftime("%Y-%m-%d") # convert to string
+            to_date = datetime.strptime(to_date, "%Y-%m-%d").replace(
+                hour=23, minute=59, second=59
+            )
 
         return self.filter(created_at__gte=from_date, created_at__lt=to_date)
 
@@ -48,7 +55,7 @@ class PhotoQuerySet(QuerySet):
             self.by_title(query.get("title"))
             .by_description(query.get("description"))
             .by_date_range(query.get("from_date"), query.get("to_date"))
-            .by_tag(query.get("tags"))[offset: offset + limit]
+            .by_tag(query.get("tags"))[offset : offset + limit]
         )
 
 
