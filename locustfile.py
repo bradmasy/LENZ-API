@@ -1,43 +1,30 @@
 import os
-from locust import HttpUser, task, events,between
+from locust import HttpUser, task, events, between
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.core.wsgi import get_wsgi_application
+import dotenv
+import random
 
-# Manually set DJANGO_SETTINGS_MODULE
+# Settings setup for Locust
+# to launch locust, use the "locust" command from the main directory in your python virtual env.
+# to launch headless use the command "locust --headless --users 10 --spawn-rate 1 -H http://your-server.com"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
-# # Ensure Django settings are configured
-# settings.configure()
+dotenv.load_dotenv()
+application = get_wsgi_application()
 
-# # Function to create a user when the Locust environment is initialized
-# @events.init.add_listener
-# def on_locust_init(environment, **kwargs):
-#     test_user = {
-#         "username": "testuser",
-#         "email": "testuser@example.com",
-#         "first_name": "Test",
-#         "last_name": "User",
-#         "password": "testpassword",
-#     }
-
-#     get_user_model().objects.create_user(
-#         email=test_user["email"],
-#         username=test_user["username"],
-#         first_name=test_user["first_name"],
-#         last_name=test_user["last_name"],
-#         password=test_user["password"],
-#     )
+user_number = 0
 
 class ListPhotos(HttpUser):
-    wait_time = between(1, 3)
+    wait_time = between(1, 5)
 
-    # @task
     def on_start(self):
-        # settings.configure()
-
+        user_number = random.randint(0,100000000)
+        print(f"starting user {user_number}")
         self.test_user = {
-            "username": "testuser",
-            "email": "testuser@example.com",
+            "username": f"testuser-{user_number}",
+            "email": f"testuser-{user_number}@example.com",
             "first_name": "Test",
             "last_name": "User",
             "password": "testpassword",
@@ -50,20 +37,25 @@ class ListPhotos(HttpUser):
             last_name=self.test_user.get("last_name"),
             password=self.test_user.get("password"),
         )
-        
+
         user_data = {
             "email": self.test_user.get("email"),
             "password": self.test_user.get("password"),
         }
-        
-        response = self.client.post(reverse("login"), user_data, format="json")
-        self.token = response.data.get("Token")
-        self.user_id = response.data.get("UserId")
+
+       # response = self.client.post(reverse("signup"), json=self.test_user)
+        #print(response.text)
+        response = self.client.post(reverse("login"), user_data)
+        response_data = response.json()
+        self.token = response_data.get("Token")
+        self.user_id = response_data.get("UserId")
+        user_number += 1
         # self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
     @task
-    def photo_detail(self):
+    def photo_endpoint(self):
         headers = {
             "Authorization": "Token " + self.token,
         }
-        self.client.get(reverse("photo"), headers=headers)
+        response = self.client.get(reverse("photo") , headers=headers).json()
+        print(response)
