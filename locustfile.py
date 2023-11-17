@@ -58,4 +58,3 @@ class ListPhotos(HttpUser):
             "Authorization": "Token " + self.token,
         }
         response = self.client.get(reverse("photo") , headers=headers).json()
-        print(response)

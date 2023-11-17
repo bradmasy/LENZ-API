@@ -22,9 +22,6 @@ class PhotoView(generics.GenericAPIView):
     pagination_class = CustomLimitOffsetPagination
     parser_classes = (MultiPartParser, FormParser)
 
-    def regex_query_params(self, params):
-        pass
-
     def list(self, request, *args, **kwargs):
         id = kwargs.get("pk", None)
 
@@ -40,8 +37,9 @@ class PhotoView(generics.GenericAPIView):
                 ),
                 "to_date": query_params.get("to_date", datetime.datetime.now().date()),
                 "tags": query_params.get("tags", []),
+                "limit": query_params.get("limit", 25),
+                "offset": query_params.get("offset", 0),
             }
-            print(queries)
             queryset = Photo.objects.by_search_query(queries)
             serializer = BasicPhotoSerializer(queryset, many=True)
 
@@ -53,7 +51,10 @@ class PhotoView(generics.GenericAPIView):
             else:
                 queryset = self.get_queryset()
                 serializer = BasicPhotoSerializer(queryset, many=True)
-        return self.pagination_class().get_paginated_response(serializer.data)
+
+        return self.pagination_class().get_paginated_response(
+            Photo, request, serializer.data
+        )
 
     def get(self, request, *args, **kwargs):
         try:
@@ -133,10 +134,16 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
-        return self.pagination_class().get_paginated_response(serializer.data)
+        return self.pagination_class().get_paginated_response(
+            model=PhotoAlbumPhoto, request=request, data=serializer.data
+        )
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        try:
+            response = self.list(request, *args, **kwargs)
+        except Exception as e:
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return response
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -153,19 +160,19 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
-    def put(self, request, *args, **kwargs):
-        try:
-            with transaction.atomic():
-                instance = self.get_object()
-                serializer = self.get_serializer(instance, data=request.data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-        except Exception as e:
-            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(
-            {"message": "PUT Request Successful", "photo_album_photo": serializer.data},
-            status=status.HTTP_200_OK,
-        )
+    # def put(self, request, *args, **kwargs):
+    #     try:
+    #         with transaction.atomic():
+    #             instance = self.get_object()
+    #             serializer = self.get_serializer(instance, data=request.data)
+    #             serializer.is_valid(raise_exception=True)
+    #             serializer.save()
+    #     except Exception as e:
+    #         return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+    #     return Response(
+    #         {"message": "PUT Request Successful", "photo_album_photo": serializer.data},
+    #         status=status.HTTP_200_OK,
+    #     )
 
     def patch(self, request, *args, **kwargs):
         try:

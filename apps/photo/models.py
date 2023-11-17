@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.query import QuerySet
+from datetime import datetime
 
 
 # Create your models here.
@@ -18,6 +19,8 @@ class PhotoQuerySet(QuerySet):
         return self.filter(id=id)
 
     def by_tag(self, tags):
+        if len(tags) == 0:
+            return self
         return self.filter(tags__name__in=tags)
 
     def get_photo_count(self):
@@ -30,14 +33,29 @@ class PhotoQuerySet(QuerySet):
         return self.filter(description__iregex=description)
 
     def by_date_range(self, from_date, to_date):
-        return self.filter(created_at__range=(from_date, to_date))
+        if from_date > to_date:
+            raise Exception("From date can not be greater than the end date specified.")
+
+        if isinstance(to_date, str):
+            to_date = datetime.strptime(to_date, "%Y-%m-%d").replace(
+                hour=23, minute=59, second=59
+            )
+        else:
+            to_date = to_date.strftime("%Y-%m-%d")  # convert to string
+            to_date = datetime.strptime(to_date, "%Y-%m-%d").replace(
+                hour=23, minute=59, second=59
+            )
+
+        return self.filter(created_at__gte=from_date, created_at__lt=to_date)
 
     def search_queryset(self, query: dict):
+        offset = int(query.get("offset"))
+        limit = int(query.get("limit"))
         return (
             self.by_title(query.get("title"))
             .by_description(query.get("description"))
             .by_date_range(query.get("from_date"), query.get("to_date"))
-            .by_tag(query.get("tags"))
+            .by_tag(query.get("tags"))[offset: offset + limit]
         )
 
 
@@ -74,6 +92,8 @@ class Photo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     title = models.CharField(max_length=100, blank=False, null=False)
 
 
