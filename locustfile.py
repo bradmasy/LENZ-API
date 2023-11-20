@@ -5,7 +5,6 @@ import time
 from locust import HttpUser, task, events, between
 from locust.runners import MasterRunner
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 from django.core.wsgi import get_wsgi_application
 
 # Settings setup for Locust
@@ -56,14 +55,6 @@ class ListPhotos(HttpUser):
             "last_name": "User",
             "password": "testpassword",
         }
-
-        # get_user_model().objects.create_user(
-        #     email=self.test_user.get("email"),
-        #     username=self.test_user.get("username"),
-        #     first_name=self.test_user.get("first_name"),
-        #     last_name=self.test_user.get("last_name"),
-        #     password=self.test_user.get("password"),
-        # )
 
         user_data = {
             "email": self.test_user.get("email"),

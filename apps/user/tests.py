@@ -7,7 +7,6 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 
-
 class UsersViewTest(TestCase):
     # This will be used to store the user created in setUp
     def setUp(self):
