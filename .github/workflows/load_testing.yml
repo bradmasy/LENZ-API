@@ -1,0 +1,26 @@
+name: Locust Load Test
+
+on:
+  workflow_run:
+    workflows: ["Heroku Deployment"]
+    types:
+      - completed
+
+jobs:
+  locust:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install --upgrade pip
+          pip3 install locust
+
+      - name: Run Locust Load Test
+        run: |
+          locust --headless --users 5 --spawn-rate 1 -H https://lenz-5f9c8ee2c363.herokuapp.com --run-time 60 --csv=results

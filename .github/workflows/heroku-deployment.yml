@@ -1,9 +1,13 @@
 name: Heroku Deployment
 
 on:
-  push:
-    branches:
-      - main  # Change this to the branch you want to trigger the deployment on
+  workflow_run:
+    workflows: ["Django CI"]
+    types:
+      - completed
+  # push:
+  #   branches:
+  #     - main  # Change this to the branch you want to trigger the deployment on
 
 jobs:
   deploy:
