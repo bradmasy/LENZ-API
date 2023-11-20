@@ -43,7 +43,7 @@ jobs:
         with:
           name: locust-results
           path: |
-            ./results/results_exceptions.csv
-            ./results/results_failures.csv
-            ./results/results_stats.csv
-            ./results/results_stats_history.csv
+            ./results_exceptions.csv
+            ./results_failures.csv
+            ./results_stats.csv
+            ./results_stats_history.csv
