@@ -145,7 +145,6 @@ if ENV == "PROD" and "test" not in sys.argv:
     )
     DATABASES["default"].update(db_from_env)
 
-print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -207,7 +206,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://lenz-5f9c8ee2c363.herokuapp.com/",
     "https://*lenz-5f9c8ee2c363.herokuapp.com/",
     "https://lenz-5f9c8ee2c363.herokuapp.com/api-auth/login/",
-    "http://localhost:8089/"
+    "http://localhost:8089/",
 ]
 
 # CSRF_COOKIE_SECURE = False
