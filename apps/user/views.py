@@ -15,7 +15,7 @@ from rest_framework.permissions import AllowAny
 # Create your views here.
 
 
-class UsersView(generics.ListCreateAPIView):
+class UsersView(generics.GenericAPIView):
     """View for returning a list of all the users in the application.
 
     This view can be used to create users for signup via the UserSerializers create method.
@@ -26,6 +26,37 @@ class UsersView(generics.ListCreateAPIView):
 
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class UserDelete(generics.DestroyAPIView):
+    """View for deleting"
+
+    Args:
+        generics (_type_): _description_
+
+    Raises:
+        Exception: _description_
+
+    Returns:
+        _type_: _description_
+    """
+
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            if kwargs.get("pk") is None:
+                raise Exception("No Primary Key was given.")
+            instance = self.get_object()
+            instance.delete()
+
+        except Exception as e:
+            print(f"{e}")
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"message": "User Successfully Deleted."}, status=status.HTTP_200_OK
+        )
 
 
 class UserLoginView(ObtainAuthToken):

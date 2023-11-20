@@ -6,7 +6,6 @@ api_url = "https://lenz-5f9c8ee2c363.herokuapp.com/"
 
 
 class HostTest(LiveServerTestCase):
-
     @classmethod
     def setUpClass(cls):
         chrome_options = Options()
