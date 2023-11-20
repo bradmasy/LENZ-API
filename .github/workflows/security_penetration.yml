@@ -32,7 +32,7 @@ jobs:
           pip install safety
           pip install requests
           pip install -U urllib3 requests
-          pip install urllib3 chardet
+          pip install  urllib3 chardet
 
 
       - name: Run Bandit
@@ -45,7 +45,7 @@ jobs:
           path: ./bandit_results.json
 
       - name: Safety Check
-        run: safety check --full-report > safety_report.txt
+        run: safety check --full-report --output JSON > safety_report.txt
 
       - name: Archiving Safety Results
         uses: actions/upload-artifact@v2
