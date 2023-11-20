@@ -19,18 +19,12 @@ application = get_wsgi_application()
 class ListPhotos(HttpUser):
     wait_time = between(3, 5)
     user_data_ready = False
-    photo_completed = False
-    test_completion = False
 
     def on_locust_init(self, **kwargs):
         if isinstance(self.environment.runner, MasterRunner):
             print("I'm on master node")
         else:
             print("I'm on a worker or standalone node")
-
-    def check_test_completion(self):
-        if self.user_data_ready and self.photo_completed:
-            self.test_completion = True
 
     @events.test_start.add_listener
     def on_test_start(environment, **kwargs):
@@ -93,4 +87,16 @@ class ListPhotos(HttpUser):
             if response.status_code == 200:
                 response.success()
 
-        self.photo_completed = True
+    @task
+    def photo_album_endpoint(self):
+        print("get photo album load test")
+
+        headers = {
+            "Authorization": "Token " + self.token,
+        }
+
+        with self.client.get(
+            reverse("photo-album"), headers=headers, catch_response=True
+        ) as response:
+            if response.status_code == 200:
+                response.success()
