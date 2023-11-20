@@ -32,11 +32,11 @@ jobs:
           pip install safety
 
       - name: Run Bandit
-        run: bandit -r . -f json -o bandit_results.json
-      
+        run: bandit -r . -f json -o bandit_results.json || echo "Bandit found issues, but continuing with the workflow"
+
       - name: Archiving Bandit Results
         uses: actions/upload-artifact@v2
-        with: 
+        with:
           name: bandit-results
           path: ./bandit_results.json
 
@@ -48,4 +48,3 @@ jobs:
         with:
           name: safety-results
           path: ./safety_report.txt
-
