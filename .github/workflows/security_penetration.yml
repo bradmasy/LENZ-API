@@ -30,6 +30,7 @@ jobs:
           pip install -r requirements.txt
           pip install bandit
           pip install safety
+          pip install requests
           pip install --upgrade urllib3 chardet
 
 
