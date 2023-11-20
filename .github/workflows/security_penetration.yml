@@ -34,7 +34,6 @@ jobs:
           pip install -U urllib3 requests
           pip install  urllib3 chardet
 
-
       - name: Run Bandit
         run: bandit -r . -f json -o bandit_results.json || echo "Bandit found issues, but continuing with the workflow"
 
@@ -45,7 +44,7 @@ jobs:
           path: ./bandit_results.json
 
       - name: Safety Check
-        run: safety check --full-report --output JSON > safety_report.txt
+        run: safety check --full-report --output JSON > safety_report.json
 
       - name: Archiving Safety Results
         uses: actions/upload-artifact@v2

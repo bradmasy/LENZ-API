@@ -1,0 +1,462 @@
+{
+    "report_meta": {
+        "scan_target": "environment",
+        "scanned": [
+            "c:\\users\\bradl\\desktop\\lenz-api\\env\\lib\\site-packages"
+        ],
+        "policy_file": null,
+        "policy_file_source": "local",
+        "api_key": false,
+        "local_database_path": null,
+        "safety_version": "2.3.5",
+        "timestamp": "2023-11-19 21:30:08",
+        "packages_found": 82,
+        "vulnerabilities_found": 2,
+        "vulnerabilities_ignored": 0,
+        "remediations_recommended": 0,
+        "telemetry": {
+            "os_type": "Windows",
+            "os_release": "10",
+            "os_description": "Windows-10-10.0.22621-SP0",
+            "python_version": "3.11.0",
+            "safety_command": "check",
+            "safety_options": {
+                "full_report": {
+                    "--full-report": 1
+                },
+                "output": {
+                    "--output": 1
+                }
+            },
+            "safety_version": "2.3.5",
+            "safety_source": "cli"
+        },
+        "git": {
+            "branch": "main",
+            "tag": "",
+            "commit": "4d77f50ae02d360c9972d36d58e55e10f1bbeb3d",
+            "dirty": true,
+            "origin": "https://github.com/bradmasy/LENZ-API.git"
+        },
+        "project": null,
+        "json_version": 1
+    },
+    "scanned_packages": {
+        "certifi": {
+            "name": "certifi",
+            "version": "2023.7.22"
+        },
+        "pytz": {
+            "name": "pytz",
+            "version": "2023.3.post1"
+        },
+        "tzdata": {
+            "name": "tzdata",
+            "version": "2023.3"
+        },
+        "pywin32": {
+            "name": "pywin32",
+            "version": "306"
+        },
+        "setuptools": {
+            "name": "setuptools",
+            "version": "65.5.0"
+        },
+        "pyzmq": {
+            "name": "pyzmq",
+            "version": "25.1.1"
+        },
+        "gevent": {
+            "name": "gevent",
+            "version": "23.9.1"
+        },
+        "django-filter": {
+            "name": "django-filter",
+            "version": "23.3"
+        },
+        "attrs": {
+            "name": "attrs",
+            "version": "23.1.0"
+        },
+        "pip": {
+            "name": "pip",
+            "version": "22.3"
+        },
+        "packaging": {
+            "name": "packaging",
+            "version": "21.3"
+        },
+        "gunicorn": {
+            "name": "gunicorn",
+            "version": "21.2.0"
+        },
+        "rich": {
+            "name": "rich",
+            "version": "13.7.0"
+        },
+        "pillow": {
+            "name": "pillow",
+            "version": "10.0.1"
+        },
+        "click": {
+            "name": "click",
+            "version": "8.1.7"
+        },
+        "whitenoise": {
+            "name": "whitenoise",
+            "version": "6.5.0"
+        },
+        "flake8": {
+            "name": "flake8",
+            "version": "6.1.0"
+        },
+        "zope.interface": {
+            "name": "zope.interface",
+            "version": "6.1"
+        },
+        "pyyaml": {
+            "name": "pyyaml",
+            "version": "6.0.1"
+        },
+        "pbr": {
+            "name": "pbr",
+            "version": "6.0.0"
+        },
+        "psutil": {
+            "name": "psutil",
+            "version": "5.9.6"
+        },
+        "stevedore": {
+            "name": "stevedore",
+            "version": "5.1.0"
+        },
+        "smmap": {
+            "name": "smmap",
+            "version": "5.0.1"
+        },
+        "zope.event": {
+            "name": "zope.event",
+            "version": "5.0"
+        },
+        "selenium": {
+            "name": "selenium",
+            "version": "4.15.2"
+        },
+        "typing-extensions": {
+            "name": "typing-extensions",
+            "version": "4.8.0"
+        },
+        "django": {
+            "name": "django",
+            "version": "4.2.5"
+        },
+        "django-cors-headers": {
+            "name": "django-cors-headers",
+            "version": "4.2.0"
+        },
+        "gitdb": {
+            "name": "gitdb",
+            "version": "4.0.11"
+        },
+        "flask-cors": {
+            "name": "flask-cors",
+            "version": "4.0.0"
+        },
+        "djangorestframework": {
+            "name": "djangorestframework",
+            "version": "3.14.0"
+        },
+        "asgiref": {
+            "name": "asgiref",
+            "version": "3.7.2"
+        },
+        "idna": {
+            "name": "idna",
+            "version": "3.4"
+        },
+        "charset-normalizer": {
+            "name": "charset-normalizer",
+            "version": "3.3.2"
+        },
+        "django-extensions": {
+            "name": "django-extensions",
+            "version": "3.2.3"
+        },
+        "gitpython": {
+            "name": "gitpython",
+            "version": "3.1.40"
+        },
+        "jinja2": {
+            "name": "jinja2",
+            "version": "3.1.2"
+        },
+        "pyparsing": {
+            "name": "pyparsing",
+            "version": "3.1.1"
+        },
+        "pyflakes": {
+            "name": "pyflakes",
+            "version": "3.1.0"
+        },
+        "greenlet": {
+            "name": "greenlet",
+            "version": "3.0.1"
+        },
+        "werkzeug": {
+            "name": "werkzeug",
+            "version": "3.0.1"
+        },
+        "flask": {
+            "name": "flask",
+            "version": "3.0.0"
+        },
+        "markdown-it-py": {
+            "name": "markdown-it-py",
+            "version": "3.0.0"
+        },
+        "requests": {
+            "name": "requests",
+            "version": "2.31.0"
+        },
+        "pycparser": {
+            "name": "pycparser",
+            "version": "2.21"
+        },
+        "locust": {
+            "name": "locust",
+            "version": "2.18.4"
+        },
+        "pygments": {
+            "name": "pygments",
+            "version": "2.17.1"
+        },
+        "pycodestyle": {
+            "name": "pycodestyle",
+            "version": "2.11.0"
+        },
+        "psycopg2": {
+            "name": "psycopg2",
+            "version": "2.9.8"
+        },
+        "sortedcontainers": {
+            "name": "sortedcontainers",
+            "version": "2.4.0"
+        },
+        "safety": {
+            "name": "safety",
+            "version": "2.3.5"
+        },
+        "markupsafe": {
+            "name": "markupsafe",
+            "version": "2.1.3"
+        },
+        "itsdangerous": {
+            "name": "itsdangerous",
+            "version": "2.1.2"
+        },
+        "dj-database-url": {
+            "name": "dj-database-url",
+            "version": "2.1.0"
+        },
+        "geventhttpclient": {
+            "name": "geventhttpclient",
+            "version": "2.0.11"
+        },
+        "urllib3": {
+            "name": "urllib3",
+            "version": "2.0.7"
+        },
+        "cffi": {
+            "name": "cffi",
+            "version": "1.16.0"
+        },
+        "six": {
+            "name": "six",
+            "version": "1.16.0"
+        },
+        "drf-api-tracking": {
+            "name": "drf-api-tracking",
+            "version": "1.8.4"
+        },
+        "bandit": {
+            "name": "bandit",
+            "version": "1.7.5"
+        },
+        "pysocks": {
+            "name": "pysocks",
+            "version": "1.7.1"
+        },
+        "blinker": {
+            "name": "blinker",
+            "version": "1.7.0"
+        },
+        "configargparse": {
+            "name": "configargparse",
+            "version": "1.7"
+        },
+        "djangorestframework-camel-case": {
+            "name": "djangorestframework-camel-case",
+            "version": "1.4.2"
+        },
+        "outcome": {
+            "name": "outcome",
+            "version": "1.3.0.post0"
+        },
+        "sniffio": {
+            "name": "sniffio",
+            "version": "1.3.0"
+        },
+        "wsproto": {
+            "name": "wsproto",
+            "version": "1.2.0"
+        },
+        "brotli": {
+            "name": "brotli",
+            "version": "1.1.0"
+        },
+        "msgpack": {
+            "name": "msgpack",
+            "version": "1.0.7"
+        },
+        "python-dotenv": {
+            "name": "python-dotenv",
+            "version": "1.0.0"
+        },
+        "trio": {
+            "name": "trio",
+            "version": "0.23.1"
+        },
+        "ruamel.yaml": {
+            "name": "ruamel.yaml",
+            "version": "0.18.5"
+        },
+        "h11": {
+            "name": "h11",
+            "version": "0.14.0"
+        },
+        "trio-websocket": {
+            "name": "trio-websocket",
+            "version": "0.11.1"
+        },
+        "mccabe": {
+            "name": "mccabe",
+            "version": "0.7.0"
+        },
+        "dparse": {
+            "name": "dparse",
+            "version": "0.6.3"
+        },
+        "colorama": {
+            "name": "colorama",
+            "version": "0.4.6"
+        },
+        "sqlparse": {
+            "name": "sqlparse",
+            "version": "0.4.4"
+        },
+        "ruamel.yaml.clib": {
+            "name": "ruamel.yaml.clib",
+            "version": "0.2.8"
+        },
+        "flask-basicauth": {
+            "name": "flask-basicauth",
+            "version": "0.2.0"
+        },
+        "mdurl": {
+            "name": "mdurl",
+            "version": "0.1.2"
+        },
+        "roundrobin": {
+            "name": "roundrobin",
+            "version": "0.0.4"
+        }
+    },
+    "affected_packages": {
+        "setuptools": {
+            "name": "setuptools",
+            "version": "65.5.0",
+            "found": "c:\\users\\bradl\\desktop\\lenz-api\\env\\lib\\site-packages",
+            "insecure_versions": [],
+            "secure_versions": [],
+            "latest_version_without_known_vulnerabilities": null,
+            "latest_version": null,
+            "more_info_url": "https://data.safetycli.com"
+        },
+        "django": {
+            "name": "django",
+            "version": "4.2.5",
+            "found": "c:\\users\\bradl\\desktop\\lenz-api\\env\\lib\\site-packages",
+            "insecure_versions": [],
+            "secure_versions": [],
+            "latest_version_without_known_vulnerabilities": null,
+            "latest_version": null,
+            "more_info_url": "https://data.safetycli.com"
+        }
+    },
+    "announcements": [],
+    "vulnerabilities": [
+        {
+            "vulnerability_id": "52495",
+            "package_name": "setuptools",
+            "ignored": {},
+            "ignored_reason": null,
+            "ignored_expires": null,
+            "vulnerable_spec": "<65.5.1",
+            "all_vulnerable_specs": [
+                "<65.5.1"
+            ],
+            "analyzed_version": "65.5.0",
+            "advisory": "Setuptools 65.5.1 includes a fix for CVE-2022-40897: Python Packaging Authority (PyPA) setuptools before 65.5.1 allows remote attackers to cause a denial of service via HTML in a crafted package or custom PackageIndex page. There is a Regular Expression Denial of Service (ReDoS) in package_index.py.\r\nhttps://pyup.io/posts/pyup-discovers-redos-vulnerabilities-in-top-python-packages",
+            "is_transitive": false,
+            "published_date": null,
+            "fixed_versions": [],
+            "closest_versions_without_known_vulnerabilities": [],
+            "resources": [],
+            "CVE": "CVE-2022-40897",
+            "severity": null,
+            "affected_versions": [],
+            "more_info_url": "https://data.safetycli.com/v/52495/f17"
+        },
+        {
+            "vulnerability_id": "61586",
+            "package_name": "django",
+            "ignored": {},
+            "ignored_reason": null,
+            "ignored_expires": null,
+            "vulnerable_spec": ">=4.2a1,<4.2.6",
+            "all_vulnerable_specs": [
+                "<3.2.22",
+                ">=4.0a1,<4.1.12",
+                ">=4.2a1,<4.2.6"
+            ],
+            "analyzed_version": "4.2.5",
+            "advisory": "Django 4.2.6, 4.1.12 and 3.2.22 include a fix for CVE-2023-43665: Denial-of-service possibility in django.utils.text.Truncator. The django.utils.text.Truncator chars() and words() methods (when used with html=True) are subject to a potential DoS (denial of service) attack via certain inputs with very long, potentially malformed HTML text. The chars() and words() methods are used to implement the truncatechars_html and truncatewords_html template filters, which are thus also vulnerable. NOTE: this issue exists because of an incomplete fix for CVE-2019-14232.\r\nhttps://www.djangoproject.com/weblog/2023/oct/04/security-releases",
+            "is_transitive": false,
+            "published_date": null,
+            "fixed_versions": [],
+            "closest_versions_without_known_vulnerabilities": [],
+            "resources": [],
+            "CVE": "CVE-2023-43665",
+            "severity": null,
+            "affected_versions": [],
+            "more_info_url": "https://data.safetycli.com/v/61586/f17"
+        }
+    ],
+    "ignored_vulnerabilities": [],
+    "remediations": {
+        "setuptools": {
+            "current_version": "65.5.0",
+            "vulnerabilities_found": 1,
+            "recommended_version": null,
+            "other_recommended_versions": [],
+            "more_info_url": "https://data.safetycli.com/?from=65.5.0"
+        },
+        "django": {
+            "current_version": "4.2.5",
+            "vulnerabilities_found": 1,
+            "recommended_version": null,
+            "other_recommended_versions": [],
+            "more_info_url": "https://data.safetycli.com/?from=4.2.5"
+        }
+    }
+}
