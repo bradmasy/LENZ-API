@@ -30,6 +30,8 @@ jobs:
           pip install -r requirements.txt
           pip install bandit
           pip install safety
+          pip install --upgrade urllib3 chardet
+
 
       - name: Run Bandit
         run: bandit -r . -f json -o bandit_results.json || echo "Bandit found issues, but continuing with the workflow"
