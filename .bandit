@@ -1,0 +1,3 @@
+[bandit]
+exclude: ./env, selenium
+targets: src/
