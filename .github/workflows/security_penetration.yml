@@ -31,7 +31,8 @@ jobs:
           pip install bandit
           pip install safety
           pip install requests
-          pip install --upgrade urllib3 chardet
+          pip install -U urllib3 requests
+          pip install urllib3 chardet
 
 
       - name: Run Bandit
