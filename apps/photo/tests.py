@@ -365,6 +365,7 @@ class PhotoAlbumPhotoTests(TestCase):
             },
             format="multipart",
         )
+
         self.photo = response.data.get("photo", None)
 
     def test_create_photo_album_photo(self):
