@@ -169,7 +169,7 @@ class TagSerializer(serializers.ModelSerializer):
         tag, id = Tag.objects.get_or_create(name=validated_data.get("name"))
         photo = Photo.objects.get(id=validated_data.get("photo_id").id)
         photo.tags.add(tag)
-        
+
         return tag
 
     def validate(self, attrs):
