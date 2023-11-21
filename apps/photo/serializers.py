@@ -160,7 +160,29 @@ class PhotoAlbumPhotoSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    photo_id = serializers.PrimaryKeyRelatedField(
+        queryset=Photo.objects.all(), required=True
+    )
+
+    def create(self, validated_data):
+        tag, id = Tag.objects.get_or_create(name=validated_data.get("name"))
+        photo = Photo.objects.get(id=validated_data.get("photo_id").id)
+        photo.tags.add(tag)
+        
+        return tag
+
+    def validate(self, attrs):
+        print("hello")
+        return super().validate(attrs)
+
+    def save(self, *args, **kwargs):
+        print("in the serializer...")
+
+        # should create a relationship entity after creating the tag
+        return super().save(*args, **kwargs)
+
     class Meta:
         model = Tag
-        fields = ("id", "name")
+        fields = ("id", "name", "photo_id")
         unique = "name"

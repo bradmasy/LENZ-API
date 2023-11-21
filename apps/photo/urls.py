@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PhotoView, PhotoAlbumPhotoView
+from .views import PhotoView, PhotoAlbumPhotoView, TagView
 
 urlpatterns = [
     path("photo", PhotoView.as_view(), name="photo"),
@@ -10,4 +10,5 @@ urlpatterns = [
         PhotoAlbumPhotoView.as_view(),
         name="photo-album-photo-by-id",
     ),
+    path("tag",TagView.as_view(),name="tag")
 ]

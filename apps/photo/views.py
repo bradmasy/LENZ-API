@@ -160,20 +160,6 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
-    # def put(self, request, *args, **kwargs):
-    #     try:
-    #         with transaction.atomic():
-    #             instance = self.get_object()
-    #             serializer = self.get_serializer(instance, data=request.data)
-    #             serializer.is_valid(raise_exception=True)
-    #             serializer.save()
-    #     except Exception as e:
-    #         return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
-    #     return Response(
-    #         {"message": "PUT Request Successful", "photo_album_photo": serializer.data},
-    #         status=status.HTTP_200_OK,
-    #     )
-
     def patch(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
@@ -243,10 +229,31 @@ class TagView(generics.GenericAPIView):
         pass
 
     def post(self, request, *args, **kwargs):
-        pass
+        serializer = self.serializer_class(data=request.data)
+
+        try:
+            with transaction.atomic():
+                serializer.is_valid(raise_exception=True)
+                tag = serializer.save()
+                photo = BasicPhotoSerializer(
+                    Photo.objects.get(id=request.data.get("photo_id"))
+                ).data
+                print(f"the tag: {tag}")
+                response_data = {
+                    "message": "Successfully Added Tag",
+                    "data": {"Tag": f"{tag}", "Photo": f"{photo.get('id')}"},
+                }
+
+        except Exception as e:
+            return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response_data, status=status.HTTP_200_OK)
 
     def patch(self, request, *args, **kwargs):
         pass
 
     def delete(self, request, *args, **kwargs):
         pass
+
+
+class PhotoTagView(generics.GenericAPIView):
+    pass

@@ -43,6 +43,7 @@ ALLOWED_HOSTS = [
     "*",
 ]
 
+ROOT_URLCONF = "graphite.urls_prometheus_wrapper"
 
 # Application definition
 
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     # REST Framework
     "django_extensions",
     "django_filters",
@@ -63,9 +65,13 @@ INSTALLED_APPS = [
     "apps.user",
     "apps.photo",
     "apps.photo_album",
+    # Prometheus
+    "django_prometheus"
 ]
 
 MIDDLEWARE = [
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # for debug toolbar
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # new
@@ -75,6 +81,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = "project.urls"
@@ -224,4 +231,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000/auth/token",
     "*",
+]
+
+
+# Debug Toolbar
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]

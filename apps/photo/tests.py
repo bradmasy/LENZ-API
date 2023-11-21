@@ -166,6 +166,25 @@ class PhotoTests(TestCase):
         response = self.client.get(reverse("photo") + "?" + urlencode(query))
         self.assertEqual(response.data.get("count"), 80)
 
+    def test_tag_photos(self):
+        tags = ["sunny", "niceDay", "mountains", "fun"]
+
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.jpg", img_file.read(), content_type="image/jpg"
+            )
+        response = self.client.post(
+            reverse("photo"),
+            {
+                "user_id": self.user_id,
+                "title": "my title",
+                "photo": photo_file,
+                "description": "test description",
+                "active": True,
+            },
+            format="multipart",
+        )
+
 
 # Photo Album Photo Tests
 
