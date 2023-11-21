@@ -96,11 +96,6 @@ class PhotoTests(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_create_photo_no_photo(self):
-        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
-            photo_file = SimpleUploadedFile(
-                "test.jpg", img_file.read(), content_type="image/jpg"
-            )
-
         response = self.client.post(
             reverse("photo"),
             {
