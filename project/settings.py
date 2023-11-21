@@ -43,7 +43,7 @@ ALLOWED_HOSTS = [
     "*",
 ]
 
-ROOT_URLCONF = "graphite.urls_prometheus_wrapper"
+# ROOT_URLCONF = "graphite.urls_prometheus_wrapper"
 
 # Application definition
 
@@ -66,11 +66,11 @@ INSTALLED_APPS = [
     "apps.photo",
     "apps.photo_album",
     # Prometheus
-    "django_prometheus"
+    # "django_prometheus"
 ]
 
 MIDDLEWARE = [
-    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    # "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # for debug toolbar
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
@@ -81,7 +81,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_prometheus.middleware.PrometheusAfterMiddleware",
+    # "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = "project.urls"
