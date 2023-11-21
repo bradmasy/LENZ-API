@@ -303,6 +303,7 @@ class PhotoTests(TestCase):
     def test_delete_timer(self):
         pass
 
+
 # Photo Album Photo Tests
 
 
