@@ -10,5 +10,5 @@ urlpatterns = [
         PhotoAlbumPhotoView.as_view(),
         name="photo-album-photo-by-id",
     ),
-    path("tag",TagView.as_view(),name="tag")
+    path("tag", TagView.as_view(), name="tag"),
 ]

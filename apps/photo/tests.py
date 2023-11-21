@@ -58,6 +58,62 @@ class PhotoTests(TestCase):
             response.data.get("photo").get("description"), "test description"
         )
 
+    def test_create_photo_no_user_id(self):
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.jpg", img_file.read(), content_type="image/jpg"
+            )
+        response = self.client.post(
+            reverse("photo"),
+            {
+                "title": "my title",
+                "photo": photo_file,
+                "description": "test description",
+                "active": True,
+            },
+            format="multipart",
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_photo_no_title(self):
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.jpg", img_file.read(), content_type="image/jpg"
+            )
+
+        response = self.client.post(
+            reverse("photo"),
+            {
+                "user_id": self.user_id,
+                "photo": photo_file,
+                "description": "test description",
+                "active": True,
+            },
+            format="multipart",
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_photo_no_photo(self):
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.jpg", img_file.read(), content_type="image/jpg"
+            )
+
+        response = self.client.post(
+            reverse("photo"),
+            {
+                "user_id": self.user_id,
+                "title": "my title",
+                "description": "test description",
+                "active": True,
+            },
+            format="multipart",
+        )
+
+        self.assertEqual(response.status_code, 400)
+
     def test_get_photo(self):
         """Test getting a photo"""
         with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
@@ -65,7 +121,7 @@ class PhotoTests(TestCase):
                 "test.jpg", img_file.read(), content_type="image/jpg"
             )
 
-        response = self.client.post(
+        self.client.post(
             reverse("photo"),
             {
                 "user_id": self.user_id,
@@ -137,7 +193,6 @@ class PhotoTests(TestCase):
                         photo_file = SimpleUploadedFile(
                             "test.jpg", img_file.read(), content_type="image/jpg"
                         )
-                    print("posting")
                     self.client.post(
                         reverse("photo"),
                         {
@@ -167,8 +222,6 @@ class PhotoTests(TestCase):
         self.assertEqual(response.data.get("count"), 80)
 
     def test_tag_photos(self):
-        tags = ["sunny", "niceDay", "mountains", "fun"]
-
         with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
             photo_file = SimpleUploadedFile(
                 "test.jpg", img_file.read(), content_type="image/jpg"
@@ -184,6 +237,17 @@ class PhotoTests(TestCase):
             },
             format="multipart",
         )
+
+        photo_id = response.data.get("photo")["id"]
+
+        tag_name = "awesome"
+        response = self.client.post(
+            reverse("tag"), {"name": tag_name, "photo_id": photo_id}, format="json"
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("data").get("Tag"), "awesome")
+        self.assertEqual(int(response.data.get("data").get("Photo")), int(photo_id))
 
 
 # Photo Album Photo Tests
@@ -276,9 +340,7 @@ class PhotoAlbumPhotoTests(TestCase):
             "photo_album_id": self.album.get("id"),
         }
 
-        response = self.client.post(
-            reverse("photo-album-photo"), payload, format="json"
-        )
+        self.client.post(reverse("photo-album-photo"), payload, format="json")
 
         url = reverse("photo-album-photo")
         response = self.client.get(url)
