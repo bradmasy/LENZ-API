@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar",
+    # "debug_toolbar",
     # REST Framework
     "django_extensions",
     "django_filters",
@@ -71,7 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     # "django_prometheus.middleware.PrometheusBeforeMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",  # for debug toolbar
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",  # for debug toolbar
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # new

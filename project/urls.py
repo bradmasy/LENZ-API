@@ -28,6 +28,6 @@ urlpatterns = [
     path("", include("apps.photo.urls")),
     path("", include("apps.photo_album.urls")),
     # path("prometheus/", include("django_prometheus.urls")),
-    path("debug/", include("debug_toolbar.urls")),
+    # path("debug/", include("debug_toolbar.urls")),
 
 ] + router.urls
