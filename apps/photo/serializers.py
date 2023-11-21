@@ -56,8 +56,8 @@ class PhotoSerializer(serializers.ModelSerializer):
 
         print(f"validating... {attrs}")
 
-        if not user_id or not title:
-            raise Exception("User ID, and Title must be in request.")
+        if not user_id:
+            raise Exception("User ID must be in request.")
 
         validated_dict = (
             {
@@ -75,6 +75,18 @@ class PhotoSerializer(serializers.ModelSerializer):
                 "description": description,
                 "active": active,
                 "title": title,
+                "latitude": latitude,
+                "longitude": longitude,
+            }
+        )
+
+        validated_dict = (
+            validated_dict
+            if title is not None
+            else {
+                "user_id": user_id,
+                "description": description,
+                "active": active,
                 "latitude": latitude,
                 "longitude": longitude,
             }
@@ -105,6 +117,7 @@ class PhotoSerializer(serializers.ModelSerializer):
         return photo
 
     def delete(self, instance):
+        print(instance)
         instance.delete()
 
     def update(self, instance, validated_data):
@@ -173,12 +186,9 @@ class TagSerializer(serializers.ModelSerializer):
         return tag
 
     def validate(self, attrs):
-        print("hello")
         return super().validate(attrs)
 
     def save(self, *args, **kwargs):
-        print("in the serializer...")
-
         # should create a relationship entity after creating the tag
         return super().save(*args, **kwargs)
 

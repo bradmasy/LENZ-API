@@ -244,6 +244,64 @@ class PhotoTests(TestCase):
         self.assertEqual(response.data.get("data").get("Tag"), "awesome")
         self.assertEqual(int(response.data.get("data").get("Photo")), int(photo_id))
 
+    def test_update_photo(self):
+        with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+            photo_file = SimpleUploadedFile(
+                "test.jpg", img_file.read(), content_type="image/jpg"
+            )
+        response = self.client.post(
+            reverse("photo"),
+            {
+                "user_id": self.user_id,
+                "title": "my title",
+                "photo": photo_file,
+                "description": "test description",
+                "active": True,
+            },
+            format="multipart",
+        )
+
+        photo_id = response.data.get("photo")["id"]
+        patch_data = {"description": "my new description", "user_id": self.user_id}
+        response = self.client.patch(
+            reverse("photo-by-id", args=[photo_id]), data=patch_data
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.data.get("photo").get("description"), "my new description"
+        )
+
+    def test_get_photos_active(self):
+        for i in range(0, 10):
+            with open("apps/photo/test_photos/test.jpg", "rb") as img_file:
+                photo_file = SimpleUploadedFile(
+                    "test.jpg", img_file.read(), content_type="image/jpg"
+                )
+            active = True
+
+            if i % 2 == 0:
+                active = False
+
+                self.client.post(
+                    reverse("photo"),
+                    {
+                        "user_id": self.user_id,
+                        "title": "my title",
+                        "photo": photo_file,
+                        "description": "test description",
+                        "active": active,
+                    },
+                    format="multipart",
+                )
+
+        response = self.client.get(reverse("photo"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("count"), 5)
+
+    def test_delete_timer(self):
+        pass
 
 # Photo Album Photo Tests
 

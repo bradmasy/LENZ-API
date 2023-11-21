@@ -17,6 +17,9 @@ RUN apk update \
     && apk add postgresql-dev \
     && pip install psycopg2
 
+# install Celery dependencies
+RUN apk add --no-cache libffi-dev
+
 # install dependencies
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
@@ -35,4 +38,4 @@ ENV SECRET_KEY=${DJANGO_SECRET_KEY}
 # ENV POSTGRES_HOST=127.0.0.1
 
 # run gunicorn
-CMD gunicorn project.wsgi:application --bind 0.0.0.0:$PORT
+CMD celery -A project worker -l info & celery -A project beat --loglevel=info & gunicorn project.wsgi:application --bind 0.0.0.0:$PORT

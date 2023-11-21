@@ -48,14 +48,19 @@ class PhotoQuerySet(QuerySet):
 
         return self.filter(created_at__gte=from_date, created_at__lt=to_date)
 
+    def by_active(self):
+        return self.filter(active=True)
+
     def search_queryset(self, query: dict):
         offset = int(query.get("offset"))
         limit = int(query.get("limit"))
+
         return (
             self.by_title(query.get("title"))
             .by_description(query.get("description"))
             .by_date_range(query.get("from_date"), query.get("to_date"))
-            .by_tag(query.get("tags"))[offset: offset + limit]
+            .by_tag(query.get("tags"))
+            .by_active()[offset : offset + limit]
         )
 
 
@@ -95,6 +100,7 @@ class Photo(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     title = models.CharField(max_length=100, blank=False, null=False)
+    delete_at = models.DateTimeField(null=True, blank=True)
 
 
 class PhotoAlbumPhotoQuerySet(QuerySet):
