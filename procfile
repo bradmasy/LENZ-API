@@ -1,3 +1,3 @@
 web: gunicorn project.wsgi:application --bind 0.0.0.0:$PORT
-worker: celery -A project worker -l info
-beat: celery -A project beat --loglevel=info
+<!-- worker: celery -A project worker -l info
+beat: celery -A project beat --loglevel=info -->

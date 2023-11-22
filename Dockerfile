@@ -46,4 +46,5 @@ RUN python manage.py migrate
 # ENV POSTGRES_HOST=127.0.0.1
 
 # run gunicorn
-CMD celery -A project worker -l info & celery -A project beat --loglevel=info & gunicorn project.wsgi:application --bind 0.0.0.0:$PORT
+# CMD celery -A project worker -l info & celery -A project beat --loglevel=info & gunicorn project.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn project.wsgi:application --bind 0.0.0.0:$PORT

@@ -151,6 +151,7 @@ if ENV == "PROD" and "test" not in sys.argv:
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
     )
     DATABASES["default"].update(db_from_env)
+print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -239,3 +240,19 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+
+# CELERY
+
+# settings.py
+
+# Celery Configuration
+# CELERY_BROKER_URL = 'pyamqp://guest:guest@localhost:5672//'  # Replace with your RabbitMQ connection details
+# CELERY_RESULT_BACKEND = 'rpc://'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
