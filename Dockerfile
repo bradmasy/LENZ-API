@@ -27,18 +27,18 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . .
 
+# collect static files
+RUN python manage.py collectstatic --noinput
+
+ENV SECRET_KEY=${DJANGO_SECRET_KEY}
+
 # Make new migrations
 RUN python manage.py makemigrations
 
 # Migrate
 RUN python manage.py migrate
 
-# collect static files
-RUN python manage.py collectstatic --noinput
-
-ENV SECRET_KEY=${DJANGO_SECRET_KEY}
-
-# ENV POSTGRES_DB=SavvyGrocerMain
+# ENV POSTGRES_DB=LENZ-API
 # ENV POSTGRES_USER=postgres
 # ENV POSTGRES_PASSWORD=password
 # ENV POSTGRES_HOST=127.0.0.1
