@@ -151,9 +151,7 @@ if ENV == "PROD" and "test" not in sys.argv:
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
     )
     DATABASES["default"].update(db_from_env)
-    print(DATABASES)
-print(ENV)
-print(DATABASES)
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
