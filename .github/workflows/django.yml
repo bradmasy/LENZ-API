@@ -15,6 +15,7 @@ jobs:
       POSTGRES_DB: test
       POSTGRES_HOST: "127.0.0.1"
       SECRET_KEY: ${{ secrets.DJANGO_SECRET }}
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
     services:
       postgres:
         image: postgres:latest
