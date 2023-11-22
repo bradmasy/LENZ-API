@@ -7,6 +7,7 @@ WORKDIR /app
 # set environment variables
 ARG DJANGO_SECRET_KEY
 ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -32,7 +33,7 @@ COPY . .
 RUN python manage.py collectstatic --noinput
 
 ENV SECRET_KEY=${DJANGO_SECRET_KEY}
-
+ENV DATABASE_URL=${DATABASE_URL}
 # Make new migrations
 RUN python manage.py makemigrations
 
