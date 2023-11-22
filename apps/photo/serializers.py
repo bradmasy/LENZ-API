@@ -17,7 +17,7 @@ class BasicPhotoSerializer(serializers.ModelSerializer):
             "photo",
             "created_at",
             "updated_at",
-            "deleted_at",
+            "delete_at",
         )
 
 
@@ -43,7 +43,7 @@ class PhotoSerializer(serializers.ModelSerializer):
             "latitude",
             "created_at",
             "updated_at",
-            "deleted_at",
+            "delete_at",
         )
 
     def validate(self, attrs):

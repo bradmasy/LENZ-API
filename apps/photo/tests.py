@@ -52,7 +52,7 @@ class PhotoTests(TestCase):
             },
             format="multipart",
         )
-
+        print(f"SETUP RESPONSE: {response.data}")
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
             response.data.get("photo").get("description"), "test description"
