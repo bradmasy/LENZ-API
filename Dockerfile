@@ -27,6 +27,12 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . .
 
+# Make new migrations
+RUN python manage.py makemigrations
+
+# Migrate
+RUN python manage.py migrate
+
 # collect static files
 RUN python manage.py collectstatic --noinput
 
