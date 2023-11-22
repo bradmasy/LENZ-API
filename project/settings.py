@@ -152,7 +152,7 @@ if ENV == "PROD" and "test" not in sys.argv:
     )
     DATABASES["default"].update(db_from_env)
 
-
+print(DATABASES)
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
