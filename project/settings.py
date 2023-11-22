@@ -18,7 +18,7 @@ import sys
 
 # Environment Variables for project
 
-ENV = os.environ.get("ENV", "PROD")
+ENV = "PROD"#os.environ.get("ENV", "PROD")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
-
+print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -151,6 +151,7 @@ if ENV == "PROD" and "test" not in sys.argv:
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
     )
     DATABASES["default"].update(db_from_env)
+    print(DATABASES)
 print(ENV)
 print(DATABASES)
 # Password validation
