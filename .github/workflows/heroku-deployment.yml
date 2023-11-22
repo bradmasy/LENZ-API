@@ -30,9 +30,8 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           docker build --build-arg DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET }} \
-          --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
-          -t registry.heroku.com/lenz/web
-
+                       --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
+                       -t registry.heroku.com/lenz/web .
       - name: Release to Heroku
         run: heroku container:release -a lenz web
 
