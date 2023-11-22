@@ -41,7 +41,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     first_name = models.CharField(max_length=100, unique=False, blank=False, null=False)
     last_name = models.CharField(max_length=100, unique=False, blank=False, null=False)
-    email = models.EmailField(max_length=100, unique=True, blank=False, null=False)
+    email = models.EmailField(
+        max_length=100, unique=True, blank=False, null=False, db_index=True
+    )
     password = models.CharField(max_length=100, unique=False, blank=False, null=False)
     subscribed = models.BooleanField(
         default=False

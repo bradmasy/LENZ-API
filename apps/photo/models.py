@@ -89,12 +89,12 @@ class Photo(models.Model):
     """
 
     objects = PhotoManager()
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True, db_index=True)
+    user_id = models.ForeignKey("user.User", on_delete=models.CASCADE, db_index=True)
     photo = models.BinaryField(blank=False, null=False)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, db_index=True)
     description = models.CharField(max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)

@@ -42,7 +42,7 @@ class PhotoAlbum(models.Model):
 
     objects = PhotoAlbumManager()
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    user_id = models.ForeignKey("user.User", on_delete=models.CASCADE, db_index=True)
     title = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
