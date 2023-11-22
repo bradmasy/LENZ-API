@@ -44,10 +44,10 @@ jobs:
           path: ./bandit_results.json
 
       - name: Safety Check
-        run: safety check --full-report 
+        run: safety check --full-report --output JSON > safety_report.json
 
-    #   - name: Archiving Safety Results
-    #     uses: actions/upload-artifact@v2
-    #     with:
-    #       name: safety-results
-    #       path: ./safety_report.json
+      - name: Archiving Safety Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: safety-results
+          path: ./safety_report.json
