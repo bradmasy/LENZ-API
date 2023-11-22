@@ -255,17 +255,15 @@ class TagView(generics.GenericAPIView):
         pass
 
 
-class RecoverPhoto(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = PhotoSerializer
-    
-    def post(self, request, *args, **kwargs):
-        
-        try:
-            with transaction.atomic():
-                
-        except Exception as e:
-            return Response({"error":f"{e}"},status=status.HTTP_400_BAD_REQUEST)
-        return Response({"message":"Photo has been recovered"})
-            
-    
+# class RecoverPhoto(generics.CreateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = PhotoSerializer
+
+#     def post(self, request, *args, **kwargs):
+
+#         try:
+#             with transaction.atomic():
+
+#         except Exception as e:
+#             return Response({"error":f"{e}"},status=status.HTTP_400_BAD_REQUEST)
+#         return Response({"message":"Photo has been recovered"})
