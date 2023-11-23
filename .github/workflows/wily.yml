@@ -1,0 +1,47 @@
+name: Maintainability
+
+on:
+  push:
+    branches: ["main","metrics"]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Dependencies
+        run: |
+          pip install wily
+
+      - name: Build Wily (if needed)
+        run: |
+          wily build
+
+      - name: Run Wily
+        run: |
+          wily report project > wily-project.txt
+          wily report apps > wily-apps.txt
+          wily report apps\photo > wily-apps-photo.txt
+          wily report apps\photo_album > wily-apps-photo-album.txt
+          wily report apps\user > wily-user.txt
+          wily graph apps -m raw.loc,cyclomatic.complexity
+
+      - name: Archive Wily Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: wily-reports
+          path: |
+                ./wily-project.txt
+                ./wily-apps.txt
+                ./wily-apps-photo.txt
+                ./wily-apps-photo-album.txt
+                ./wily-user.txt
+                ./wily-report.html
