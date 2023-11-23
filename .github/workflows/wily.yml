@@ -29,9 +29,9 @@ jobs:
         run: |
           wily report project > wily-project.txt
           wily report apps > wily-apps.txt
-          wily report apps\\photo > wily-apps-photo.txt
-          wily report apps\\photo_album > wily-apps-photo-album.txt
-          wily report apps\\user > wily-user.txt
+          wily report apps/photo > wily-apps-photo.txt
+          wily report apps/photo_album > wily-apps-photo-album.txt
+          wily report apps/user > wily-user.txt
           wily graph apps -m raw.loc,cyclomatic.complexity
 
       - name: Archive Wily Reports
