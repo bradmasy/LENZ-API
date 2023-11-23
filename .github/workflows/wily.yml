@@ -2,7 +2,8 @@ name: Maintainability
 
 on:
   push:
-    branches: ["main","metrics"]
+    branches:
+      - main
 
 jobs:
   analyze:
@@ -27,21 +28,22 @@ jobs:
 
       - name: Run Wily
         run: |
-          wily report project > wily-project.txt
-          wily report apps > wily-apps.txt
-          wily report apps/photo > wily-apps-photo.txt
-          wily report apps/photo_album > wily-apps-photo-album.txt
-          wily report apps/user > wily-user.txt
-          wily graph apps -m raw.loc,cyclomatic.complexity
+          # Use the github.event.before and github.sha context variables
+          commit_range=${{ github.event.before }}..${{ github.sha }}
+          wily report project --revision-range $commit_range > wily-project.txt
+          wily report apps --revision-range $commit_range > wily-apps.txt
+          wily report apps/photo --revision-range $commit_range > wily-apps-photo.txt
+          wily report apps/photo_album --revision-range $commit_range > wily-apps-photo-album.txt
+          wily report apps/user --revision-range $commit_range > wily-user.txt
+          wily graph apps -m raw.loc,cyclomatic.complexity --revision-range $commit_range
 
       - name: Archive Wily Reports
         uses: actions/upload-artifact@v2
         with:
           name: wily-reports
           path: |
-                ./wily-project.txt
-                ./wily-apps.txt
-                ./wily-apps-photo.txt
-                ./wily-apps-photo-album.txt
-                ./wily-user.txt
-                ./wily-report.html
+            ./wily-project.txt
+            ./wily-apps.txt
+            ./wily-apps-photo.txt
+            ./wily-apps-photo-album.txt
+            ./wily-user.txt
