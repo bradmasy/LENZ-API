@@ -1,6 +1,5 @@
 import aspectlib
 import logging
-from django.db import transaction
 
 logging.basicConfig(
     filename="error.log",
