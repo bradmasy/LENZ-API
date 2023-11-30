@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db import transaction
 from libs.custom_limit_offset_pagination import CustomLimitOffsetPagination
+import libs.aspects as aspects
 
 
 class PhotoView(generics.GenericAPIView):
@@ -56,6 +57,7 @@ class PhotoView(generics.GenericAPIView):
             Photo, request, serializer.data
         )
 
+    @aspects.log_error
     def get(self, request, *args, **kwargs):
         try:
             response = self.list(request, *args, **kwargs)
@@ -63,6 +65,7 @@ class PhotoView(generics.GenericAPIView):
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return response
 
+    @aspects.log_error
     def post(self, request, *args, **kwargs):
         try:
             serializer = self.serializer_class(data=request.data)
@@ -78,6 +81,7 @@ class PhotoView(generics.GenericAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
+    @aspects.log_error
     def patch(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
@@ -97,6 +101,7 @@ class PhotoView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
 
+    @aspects.log_error
     def delete(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
@@ -138,6 +143,7 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
             model=PhotoAlbumPhoto, request=request, data=serializer.data
         )
 
+    @aspects.log_error
     def get(self, request, *args, **kwargs):
         try:
             response = self.list(request, *args, **kwargs)
@@ -145,6 +151,7 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return response
 
+    @aspects.log_error
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
@@ -160,6 +167,7 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
+    @aspects.log_error
     def patch(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
@@ -179,6 +187,7 @@ class PhotoAlbumPhotoView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
 
+    @aspects.log_error
     def delete(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
