@@ -60,7 +60,7 @@ class PhotoQuerySet(QuerySet):
             .by_description(query.get("description"))
             .by_date_range(query.get("from_date"), query.get("to_date"))
             .by_tag(query.get("tags"))
-            .by_active()[offset: offset + limit]
+            .by_active()[offset : offset + limit]
         )
 
 

@@ -13,6 +13,9 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db import transaction
 from libs.custom_limit_offset_pagination import CustomLimitOffsetPagination
+import libs.aspects as aspects
+
+
 
 
 class PhotoView(generics.GenericAPIView):
@@ -55,7 +58,8 @@ class PhotoView(generics.GenericAPIView):
         return self.pagination_class().get_paginated_response(
             Photo, request, serializer.data
         )
-
+        
+    @aspects.log_error
     def get(self, request, *args, **kwargs):
         try:
             response = self.list(request, *args, **kwargs)
@@ -63,6 +67,7 @@ class PhotoView(generics.GenericAPIView):
             return Response({"error": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
         return response
 
+    @aspects.log_error
     def post(self, request, *args, **kwargs):
         try:
             serializer = self.serializer_class(data=request.data)
